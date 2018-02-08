@@ -29,9 +29,7 @@ def main():
 
     test_model = DeepNeuralNetwork(X_train_orig, Y_train_orig, X_test_orig, Y_test_orig, classes)
 
-    print(test_model.parameters)
-
-    test_model.print_dataset_shapes()
+    parameters = test_model.train()
 
 
 if __name__ == "__main__":
