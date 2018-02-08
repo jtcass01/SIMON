@@ -1,11 +1,22 @@
+import tensorflow as tf
+
+from data_utilities import convert_to_one_hot
 
 class DeepNeuralNetwork(object):
-	def __init__(self, X_train_orig, Y_train_orig, X_test_orig, Y_test_orig):
-	    train_parameter_matrix, train_targets, test_parameter_matrix, test_targets = flatten_data(X_train_orig, Y_train_orig, X_test_orig, Y_test_orig)
-		print(train_parameter_matrix.shape, train_targets.shape, test_parameter_matrix.shape, test_targets.shape)
+	def __init__(self, X_train_orig, Y_train_orig, X_test_orig, Y_test_orig, classes):
+		self.train_parameter_matrix, self.train_targets, self.test_parameter_matrix, self.test_targets = self.flatten_data(X_train_orig, Y_train_orig, X_test_orig, Y_test_orig)
+		self.classes = classes.reshape((classes.shape[0],1))
+		self.parameters = self.initialize_parameters()
 
+	def print_dataset_shapes(self):
+		print("===== Printing dataset shapes =====")
+		print(self.train_parameter_matrix.shape, "train_parameter_matrix")
+		print(self.train_targets.shape, "train_targets")
+		print(self.test_parameter_matrix.shape, "test_parameter_matrix")
+		print(self.test_targets.shape, "test_targets")
+		print(self.classes.shape, "classes")
 
-	def flatten_data(X_train_orig, Y_train_orig, X_test_orig, Y_test_orig):
+	def flatten_data(self, X_train_orig, Y_train_orig, X_test_orig, Y_test_orig):
 		"""
 		Created By: Jacob Taylor Cassady
 		Last Updated: 2/7/2018
@@ -35,3 +46,35 @@ class DeepNeuralNetwork(object):
 
 
 		return X_train, Y_train, X_test, Y_test
+
+	def initialize_parameters(self, N1 = 25, N2 = 12):
+		"""
+		Initializes parameters to build a neural network with tensorflow. The shapes are:
+							W1 : [N1, X_train.shape[0]]
+							b1 : [N1, 1]
+							W2 : [N2, N1]
+							b2 : [N2, 1]
+							W3 : [classes.shape[0], N2]
+							b3 : [classes.shape[0], 1]
+    
+		Returns:
+		parameters -- a dictionary of tensors containing W1, b1, W2, b2, W3, b3
+		"""
+
+		W1 = tf.get_variable('W1', [N1, self.train_parameter_matrix.shape[0]], initializer = tf.contrib.layers.xavier_initializer(seed=1))
+		b1 = tf.get_variable('b1', [N1, 1], initializer = tf.zeros_initializer())
+		W2 = tf.get_variable('W2', [N2,N1], initializer = tf.contrib.layers.xavier_initializer(seed=1))
+		b2 = tf.get_variable('b2', [N2, 1], initializer = tf.zeros_initializer())
+		W3 = tf.get_variable('W3', [self.classes.shape[0],N2], initializer = tf.contrib.layers.xavier_initializer(seed=1))
+		b3 = tf.get_variable('b3', [self.classes.shape[0], 1], initializer = tf.zeros_initializer())
+
+		parameters = {
+			"W1" : W1,
+			"b1" : b1,
+			"W2" : W2,
+			"b2" : b2,
+			"W3" : W3,
+			"b3" : b3,
+			}
+
+		return parameters

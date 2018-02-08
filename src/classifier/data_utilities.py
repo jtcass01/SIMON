@@ -18,11 +18,11 @@ def load_practice_dataset():
     classes -- A NumPy array of (currently) 6 classes. (0-5)
     """
 
-    train_dataset = h5py.File('../Practice_Data/train_signs.h5', 'r')
+    train_dataset = h5py.File('../../Practice_Data/train_signs.h5', 'r')
     train_set_x_orig = np.array(train_dataset["train_set_x"][:])
     train_set_y_orig = np.array(train_dataset["train_set_y"][:])
 
-    test_dataset = h5py.File('../Practice_Data/test_signs.h5', 'r')
+    test_dataset = h5py.File('../../Practice_Data/test_signs.h5', 'r')
     test_set_x_orig = np.array(test_dataset["test_set_x"][:])
     test_set_y_orig = np.array(test_dataset["test_set_y"][:])
 

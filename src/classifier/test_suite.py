@@ -1,4 +1,4 @@
-from data_utilities import load_practice_dataset, convert_to_one_hot
+from data_utilities import load_practice_dataset
 from neural_network_model import DeepNeuralNetwork
 import matplotlib.pyplot as plt
 
@@ -27,7 +27,11 @@ def main():
 
     # Flatten images and convert targets using one hot encoding
 
-    test_model = DeepNeuralNetwork(train_parameter_matrix, train_targets, test_parameter_matrix, test_targets)
+    test_model = DeepNeuralNetwork(X_train_orig, Y_train_orig, X_test_orig, Y_test_orig, classes)
+
+    print(test_model.parameters)
+
+    test_model.print_dataset_shapes()
 
 
 if __name__ == "__main__":
