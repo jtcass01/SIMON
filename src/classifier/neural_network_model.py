@@ -9,7 +9,7 @@ from data_utilities import convert_to_one_hot, random_mini_batches
 class DeepNeuralNetwork(object):
 	def __init__(self, X_train_orig, Y_train_orig, X_test_orig, Y_test_orig, classes):
 		tf.reset_default_graph()
-		self.train_matrix, self.train_targets, self.test_parameter_matrix, self.test_matrix = self.flatten_data(X_train_orig, Y_train_orig, X_test_orig, Y_test_orig)
+		self.train_matrix, self.train_targets, self.test_matrix, self.test_targets = self.flatten_data(X_train_orig, Y_train_orig, X_test_orig, Y_test_orig)
 		self.classes = classes.reshape((classes.shape[0],1))
 		self.parameters = self.initialize_parameters()
 
@@ -113,8 +113,8 @@ class DeepNeuralNetwork(object):
 			accuracy = tf.reduce_mean(tf.cast(correct_prediction, 'float'))
 
 			# Display accuracy of train and test predictions.
-			print("Train Accuracy: ", accuracy.eval({X: train_matrix, Y: train_targets}))
-			print("Test Accuracy: ", accuracy.eval({X: test_matrix, Y: test_targets}))
+			print("Train Accuracy: ", accuracy.eval({X: self.train_matrix, Y: self.train_targets}))
+			print("Test Accuracy: ", accuracy.eval({X: self.test_matrix, Y: self.test_targets}))
 
 			# Return parameters for prediction against the model.
 			return parameters

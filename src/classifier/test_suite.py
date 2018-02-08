@@ -23,11 +23,13 @@ def main():
     X_train_orig, Y_train_orig, X_test_orig, Y_test_orig, classes = load_practice_dataset()
 
     # Show some images (optional of course : ) )
-#    show_some_images(X_train_orig, X_test_orig)
+    show_some_images(X_train_orig, X_test_orig)
 
     # Flatten images and convert targets using one hot encoding
 
     test_model = DeepNeuralNetwork(X_train_orig, Y_train_orig, X_test_orig, Y_test_orig, classes)
+
+
 
     parameters = test_model.train()
 
