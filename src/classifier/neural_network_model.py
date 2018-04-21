@@ -101,7 +101,8 @@ class DeepNeuralNetwork(object):
 			plt.ylabel('cost')
 			plt.xlabel('iteration ( per 5 )')
 			plt.title('Learning rate = ' + str(learning_rate))
-			plt.show()
+			if print_cost == True:
+				plt.show()
 
 			# Save the parameters as a varaible for prediction and evaluation of fit to test set.
 			parameters = session.run(parameters)
@@ -117,7 +118,16 @@ class DeepNeuralNetwork(object):
 			print("Test Accuracy: ", accuracy.eval({X: self.test_matrix, Y: self.test_targets}))
 
 			# Return parameters for prediction against the model.
-			return parameters
+			self.parameters = parameters
+
+			train_accuracy = accuracy.eval({X: self.train_matrix, Y: self.train_targets})
+			test_accuracy = accuracy.eval({X: self.test_matrix, Y: self.test_targets})
+
+			accuracies = {"train_accuracy": train_accuracy,
+                          "test_accuracy" : test_accuracy}
+
+			# Return parameters for prediction against the model.
+			return parameters, accuracies
 
 	def flatten_data(self, X_train_orig, Y_train_orig, X_test_orig, Y_test_orig):
 		"""
