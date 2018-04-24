@@ -15,10 +15,9 @@ def menu(user_response):
         simon.improve_prediction_model(epochs = 5)
     elif user_response == '2':
         prediction = simon.predict_image(image_location = askopenfilename())
-        print(prediction)
+        print('writing to serial: ', bytes(prediction)[0])
         with serial.Serial(com_port, 9600) as ser:
-            print('Writing to serial', bytes(int(prediction[0])))
-            ser.write(bytes(int(prediction[0])))
+            ser.write(bytes(prediction)[0])
     elif user_response == '0':
         exit()
     else:
