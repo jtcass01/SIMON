@@ -87,7 +87,7 @@ def main():
             print(new_model)
             save_model(new_model.parameters, new_model.accuracies)
         else:
-            print("Previous model is superior or equivalent.")
+            print("Previous model is superior.")
 
     parameters, accuracies = load_model()
     best_model = PredictionModel(parameters, accuracies)
