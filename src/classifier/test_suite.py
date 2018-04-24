@@ -1,5 +1,6 @@
 from data_utilities import load_practice_dataset
-from neural_network_model import DeepNeuralNetwork
+from prediction_model import PredictionModel
+from deep_neural_network import DeepNeuralNetwork
 import matplotlib.pyplot as plt
 
 import numpy as np
@@ -77,22 +78,18 @@ def main():
     test_model = DeepNeuralNetwork(X_train_orig, Y_train_orig, X_test_orig, Y_test_orig, classes)
 
     for i in range(5):
-        new_parameters, new_accuracies = test_model.train(num_epochs = 1500, print_cost = False)
-    
-        old_parameters, old_accuracies = load_model()
+        new_model = PredictionModel(test_model.train(num_epochs = 1500, print_cost = False))
+        previous_model = PredictionModel(load_model())
 
-        if (new_accuracies['train_accuracy'] >= old_accuracies['train_accuracy'] and new_accuracies['test_accuracy'] >= old_accuracies['test_accuracy']):
-            print("\n\tNew model is better... Updated Accuracies: ")
-            print("\ttrain_accuracy", new_accuracies['train_accuracy'])
-            print("\ttest_accuracy", new_accuracies['test_accuracy'])
-            save_model(new_parameters, new_accuracies)
+        if  new_model >= previous_model :
+            print("\n\tNew model is better... Displaying accuracies and updating files.. ")
+            print(new_model)
+            save_model(new_model.parameters, new_model.accuracies)
         else:
             print("Previous model is superior.")
 
-
-    parameters, accuracies = load_model()
-    print("\n\n PARAMETERS: ", parameters)
-    print("\n\n ACCURACIES: ", accuracies)
+    best_model = PredictionModel(load_model())
+    print(best_model)
 
 
 if __name__ == "__main__":

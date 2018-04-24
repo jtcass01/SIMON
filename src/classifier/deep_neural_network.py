@@ -53,7 +53,7 @@ class DeepNeuralNetwork(object):
 		print("Complete.\n")
 
 		# Build the forward propagation in the TensorFlow Graph
-		print("Building the forward propagation int he TensorFlow Graph...")
+		print("Building the forward propagation in the TensorFlow Graph...")
 		Z3 = self.forward_propagation(X, parameters)
 		print("Complete.\n")
 
@@ -72,6 +72,7 @@ class DeepNeuralNetwork(object):
 		with tf.Session() as session:
 			# Run the initialization
 			session.run(init)
+			print("Beginning training...")
 
 			# Perform Training
 			for epoch in range(num_epochs):
@@ -235,11 +236,11 @@ class DeepNeuralNetwork(object):
 		W3 = parameters['W3']
 		b3 = parameters['b3']
 
-		Z1 = tf.matmul(W1, input_matrix) + b1                                              # Z1 = np.dot(W1, X) + b1
+		Z1 = tf.matmul(W1, input_matrix) + b1                            # Z1 = np.dot(W1, X) + b1
 		A1 = tf.nn.relu(Z1)                                              # A1 = relu(Z1)
-		Z2 = tf.matmul(W2, A1) + b2                                              # Z2 = np.dot(W2, a1) + b2
+		Z2 = tf.matmul(W2, A1) + b2                                      # Z2 = np.dot(W2, a1) + b2
 		A2 = tf.nn.relu(Z2)                                              # A2 = relu(Z2)
-		Z3 = tf.matmul(W3, A2) + b3                                              # Z3 = np.dot(W3,A2) + b3
+		Z3 = tf.matmul(W3, A2) + b3                                      # Z3 = np.dot(W3,A2) + b3
 
 		return Z3
 
