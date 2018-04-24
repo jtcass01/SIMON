@@ -102,7 +102,8 @@ class DeepNeuralNetwork(object):
 			plt.xlabel('iteration ( per 5 )')
 			plt.title('Learning rate = ' + str(learning_rate))
 			if print_cost == True:
-				plt.show()
+				#plt.show()
+				pass
 
 			# Save the parameters as a varaible for prediction and evaluation of fit to test set.
 			parameters = session.run(parameters)
