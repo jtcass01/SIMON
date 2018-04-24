@@ -14,8 +14,9 @@ class SIMON(object):
     def predict_image(self, image_location):
         image = np.array(ndimage.imread(image_location, flatten = False))
         X = scipy.misc.imresize(image, size=(64,64)).reshape((1, 64*64*3)).T
-        prediction = self.prediction_model.predict(X)
-        print('Image prediction = ', prediction)
+        
+        return self.prediction_model.predict(X)
+
 
     def load_model(self):
         parameters = {
