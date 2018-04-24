@@ -47,7 +47,7 @@ class SIMON(object):
         test_model = DeepNeuralNetwork(X_train_orig, Y_train_orig, X_test_orig, Y_test_orig, classes)
 
         for i in range(epochs):
-            parameters, accuracies = test_model.train(num_epochs = 1500, print_cost = True)
+            parameters, accuracies = test_model.train(num_epochs = 1500, print_cost = False)
             new_model = PredictionModel(parameters, accuracies)
 
             if  new_model > self.prediction_model :
