@@ -1,3 +1,5 @@
+import tensorflow as tf
+
 class PredictionModel(object):
     def __init__(self, parameters, accuracies):
         self.parameters = parameters

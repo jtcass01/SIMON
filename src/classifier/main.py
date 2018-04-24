@@ -1,4 +1,5 @@
 from SIMON import SIMON
+from tkinter.filedialog import askopenfilename
 
 simon = SIMON()
 
@@ -10,7 +11,7 @@ def menu(user_response):
     if user_response == '1':
         simon.improve_prediction_model(epochs = 1)
     elif user_response == '2':
-        simon.predict(image_location = None)
+        simon.predict_image(image_location = askopenfilename())
     elif user_response == '0':
         exit()
     else:

@@ -12,7 +12,7 @@ class SIMON(object):
         print("Hello, my name is SIMON :-).  I am a Sign Integrated Machine Operating Network.  ")
 
     def predict_image(self, image_location):
-        image = NoneType.array(ndimage.imread(image_location, flatten = False))
+        image = np.array(ndimage.imread(image_location, flatten = False))
         X = scipy.misc.imresize(image, size=(64,64)).reshape((1, 64*64*3)).T
         prediction = self.prediction_model.predict(X)
         print('Image prediction = ', prediction)
