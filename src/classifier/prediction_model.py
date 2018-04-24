@@ -58,7 +58,7 @@ class PredictionModel(object):
 
     """ Overloading of string operator """
     def __str__(self):
-        return "\t === PREDICTION MODEL ===\n" + '\tTrain Accuracy: ' + self.accuracies['train_accuracy'] + '\n\tTest Accuracy: ' + self.accuracies['test_accuracy']
+        return "\t === CURRENT PREDICTION MODEL ===\n" + '\tTrain Accuracy: ' + self.accuracies['train_accuracy'] + '\n\tTest Accuracy: ' + self.accuracies['test_accuracy']
 
     """ Overloading of comparison operators """
     def __eq__(self, other):
