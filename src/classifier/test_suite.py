@@ -73,22 +73,24 @@ def main():
     # Show some images (optional of course : ) )
 #    show_some_images(X_train_orig, X_test_orig)
 
-    # Flatten images and convert targets using one hot encoding
-
     test_model = DeepNeuralNetwork(X_train_orig, Y_train_orig, X_test_orig, Y_test_orig, classes)
 
     for i in range(5):
-        new_model = PredictionModel(test_model.train(num_epochs = 1500, print_cost = False))
-        previous_model = PredictionModel(load_model())
+        parameters, accuracies = test_model.train(num_epochs = 1500, print_cost = True)
+        new_model = PredictionModel(parameters, accuracies)
 
-        if  new_model >= previous_model :
+        parameters, accuracies = load_model()
+        previous_model = PredictionModel(parameters, accuracies)
+
+        if  new_model > previous_model :
             print("\n\tNew model is better... Displaying accuracies and updating files.. ")
             print(new_model)
             save_model(new_model.parameters, new_model.accuracies)
         else:
-            print("Previous model is superior.")
+            print("Previous model is superior or equivalent.")
 
-    best_model = PredictionModel(load_model())
+    parameters, accuracies = load_model()
+    best_model = PredictionModel(parameters, accuracies)
     print(best_model)
 
 

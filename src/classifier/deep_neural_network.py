@@ -72,7 +72,6 @@ class DeepNeuralNetwork(object):
 		with tf.Session() as session:
 			# Run the initialization
 			session.run(init)
-			print("Beginning training...")
 
 			# Perform Training
 			for epoch in range(num_epochs):
