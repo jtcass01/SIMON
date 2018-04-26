@@ -1,5 +1,8 @@
 # SIMON
-Sign Interfaced Machine Operating Network
+**SIMON** - Sign Interfaced Machine Operating Network
+**Team Members** - Jacob Cassady, Aaron Fox, Nolan Holdan, Kristi Kidd, Jacob Marcum
+Python code developed by Jacob Cassady.
+C and Assembly code developed by Jacob Marcum.
 
 ## Abstract
 The purpose of the Sign-Interfaced Machine Operating Network, or SIMON, is to develop a machine learning classifier that translates a discrete sign language using images of the hands into corresponding symbols or actions. SIMON interprets American Sign Language (ASL) and displays the translation on the given screen through the following steps. The given image of the ASL sign was extracted to produce a single numerical digit using a machine learning model. That value was then serialized to ASCII and sent to the MCU (microcontroller unit). The MCU would deserialize the value, as necessary, and post the result to the LCD screen. Hardware used to complete this project included the ATMega328P Xplained Mini Board, Laptop Windows, webcam, and an LCD screen.The goal of final project was achieved as we were successfully able to read the American Sign Language images and display the desired result on the LCD screen. 
