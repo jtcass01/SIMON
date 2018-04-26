@@ -1,7 +1,7 @@
  // Assembler1.s
  //
  // Created: 1/30/2018 4:15:16 AM
- // Author : Jacob Taylor Cassady
+ // Author : Jacob Marcum and Jacob Cassady
  // Copyright 2018, All Rights Reserved
 
 .section ".data"					//Creates a name 'data' for the following code
