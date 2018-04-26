@@ -1,7 +1,10 @@
 # SIMON
 **SIMON** - Sign Interfaced Machine Operating Network
+
 **Team Members** - Jacob Cassady, Aaron Fox, Nolan Holdan, Kristi Kidd, Jacob Marcum
+
 Python code developed by Jacob Cassady.
+
 C and Assembly code developed by Jacob Marcum.
 
 ## Abstract
