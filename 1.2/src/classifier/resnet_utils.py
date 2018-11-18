@@ -96,7 +96,6 @@ def forward_propagation_for_predict(X, parameters):
     return Z3
 
 def predict(X, parameters):
-    
     W1 = tf.convert_to_tensor(parameters["W1"])
     b1 = tf.convert_to_tensor(parameters["b1"])
     W2 = tf.convert_to_tensor(parameters["W2"])
