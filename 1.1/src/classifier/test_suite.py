@@ -1,8 +1,8 @@
 from data_utilities import load_practice_dataset
 from prediction_model import PredictionModel
 from deep_neural_network import DeepNeuralNetwork
-import matplotlib.pyplot as plt
 
+import matplotlib.pyplot as plt
 import numpy as np
 
 def display_image(data_set, index):
