@@ -2,7 +2,7 @@
 import numpy as np
 from keras import layers
 from keras.layers import Input, Add, Dense, Activation, ZeroPadding2D, BatchNormalization, Flatten, Conv2D, AveragePooling2D, MaxPooling2D, GlobalMaxPooling2D
-from keras.models import Model, load_model
+from keras.models import Model, load_model, model_from_json
 from keras.preprocessing import image
 from keras.utils import layer_utils
 from keras.utils.data_utils import get_file
@@ -50,6 +50,8 @@ class ResNet50(object):
         self.X_test_orig = None
         self.Y_test_orig = None
         self.classes = None
+        self.loss = 1.0
+        self.accuracy = 0.0
 
     def identity_block(self, X, f, filters, stage, block):
         """
@@ -211,6 +213,31 @@ class ResNet50(object):
 
         return model
 
+
+    def save_model(self, model = 'best_model'):
+        # Save the model to JSON
+        json_model = self.model.to_json()
+        with open("../../models/" + model + ".json", "w") as json_file:
+            json_file.write(json_model)
+
+        # Save weights
+        self.model.save_weights("../../models/" + model + ".h5")
+        print("Saved model " + model + " to disk")
+
+
+    def load_model(self, model = "best_model"):
+        json_file = open("../../models/" + model + ".json", 'r')
+        loaded_json_model = json_file.read()
+        json_file.close()
+        self.model = model_from_json(loaded_json_model)
+
+        #load weights into new model
+        self.model.load_weights("../../models/" + model + ".h5")
+        self.model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+        print("Loaded model " + model + " from disk")
+
+
+
     def load_data_h5(self, relative_directory_path):
         print("\nLoading data from relative directory path:", relative_directory_path)
         X_train_orig, Y_train_orig, X_test_orig, Y_test_orig, self.classes = load_dataset(relative_directory_path)
@@ -236,15 +263,25 @@ class ResNet50(object):
 
     def evaluate_model(self):
         print("\nEvaluating Model...")
-        preds = self.model.evaluate(self.X_test, self.Y_test)
+        preds = self.model.evaluate(self.X_test, self.Y_test, verbose=1)
+        self.loss = preds[0]
+        self.accuracy = preds[1]
         print ("\tLoss = " + str(preds[0]))
         print ("\tTest Accuracy = " + str(preds[1]))
 
 def test_ResNet50(epochs = 2, batch_size = 32):
     test_model = ResNet50(input_shape = (64, 64, 3), classes = 6)
     test_model.load_data_h5("../../../Practice_Data/")
-    test_model.train_model(2, 32)
+    test_model.train_model(epochs, batch_size)
+    
+    print("Evaluating model before saving")
+    test_model.evaluate_model()
+
+    test_model.save_model()
+    test_model.load_model()
+
+    print("Evaluating model after retrieving")
     test_model.evaluate_model()
 
 if __name__ == "__main__":
-    test_ResNet50()
+    test_ResNet50(3, 32)
