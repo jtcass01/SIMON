@@ -284,4 +284,4 @@ def test_ResNet50(epochs = 2, batch_size = 32):
     test_model.evaluate_model()
 
 if __name__ == "__main__":
-    test_ResNet50(3, 32)
+    test_ResNet50(20, 32)
