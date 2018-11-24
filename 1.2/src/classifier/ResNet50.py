@@ -268,6 +268,7 @@ class ResNet50(object):
         self.accuracy = preds[1]
         print ("\tLoss = " + str(preds[0]))
         print ("\tTest Accuracy = " + str(preds[1]))
+        return preds[0], preds[1]
 
     def predict_image(self, image_path):
         print("prepareing to predict image:", image_path)

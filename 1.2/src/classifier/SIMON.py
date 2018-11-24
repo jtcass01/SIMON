@@ -36,16 +36,26 @@ class SIMON(object):
             print("Invalid menu response.  Please try again.")
 
     def prompt_load_previous_model(self):
-        print("Loading previous model...")
+        model_name = input("What is the alias of the model you would like to load : ")
 
-    def load_previous_model(self, model_name):
-        pass
+        if os.path.isfile("../../models/" + model_name + ".h5"): # previous model exists
+            self.load_model(model_name)
+        else:
+            print("Unable to find a previous model matching the given alias.")
+
+    def load_model(self, model_name):
+            self.dnn_model = ResNet50(input_shape = (64, 64, 3), classes = 6)
+            self.dnn_model.load_model(model_name)
 
     def prompt_train_model(self):
         model_name = input("What is the alias of the model you would like to train : ")
 
         if os.path.isfile("../../models/" + model_name + ".h5"): # previous model exists
-            print("Previous model found.")
+            print("Previous model found matching given.  Evaluating previous model...")
+            self.load_model(model_name)
+            self.dnn_model.load_data_h5("../../../Practice_Data/")
+            self.test_loss, self.test_accuracy = self.dnn_model.evaluate_model()
+            print("Previous model has a loss of {} and an accuracy of {}".format(self.test_loss, self.test_accuracy))
         else:
             print("Unable to find a previous model matching the given alias.")
 
