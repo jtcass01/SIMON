@@ -1,9 +1,11 @@
 from ResNet50 import ResNet50
+import os
 
 class SIMON(object):
     def __init__(self):
         self.test_loss = 1.0
         self.test_accuracy = 0.0
+        self.dnn_model = None
 
     def display_menu(self):
         print("Hello.  My name is SIMON.  I am a neural network designed to classify representations of american sign language.")
@@ -39,17 +41,25 @@ class SIMON(object):
     def load_previous_model(self, model_name):
         pass
 
-    def prompt_train_new_model(self):
-        print("Training a new model...")
+    def prompt_train_model(self):
+        model_name = input("What is the alias of the model you would like to train : ")
+
+        model_path = os.path.dirname(os.path.realpath(__file__)) + model_name + ".h5"
+
+        if os.path.isfile(model_path): # previous model exists
+            print("Previous model found.")
+        else:
+            print("Unable to find a previous model matching the given alias.")
 
     def train_new_model(self, model_name):
         pass
 
     def prompt_predict_image(self):
-        print("predicting an image...")
-
-    def predict_image(self, image):
-        pass
+        if self.dnn_model is None:
+            print("You need to load or train a model for me to perform predictions with.")
+        else:
+            image_path = input("Where is your image located : ")
+            self.dnn_model.predict_image(image_path = image_path)
 
 
 if __name__ == "__main__":
