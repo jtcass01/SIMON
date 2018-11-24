@@ -1,5 +1,10 @@
 ﻿import matplotlib.pyplot as plt
 import numpy as np
+import pydot
+from IPython.display import SVG
+import scipy.misc
+import os
+
 from keras import layers
 from keras.layers import Input, Add, Dense, Activation, ZeroPadding2D, BatchNormalization, Flatten, Conv2D, AveragePooling2D, MaxPooling2D, GlobalMaxPooling2D
 from keras.models import Model, load_model, model_from_json
@@ -7,17 +12,14 @@ from keras.preprocessing import image
 from keras.utils import layer_utils
 from keras.utils.data_utils import get_file
 from keras.applications.imagenet_utils import preprocess_input
-import pydot
-from IPython.display import SVG
 from keras.utils.vis_utils import model_to_dot
 from keras.utils import plot_model
-from resnet_utils import *
 from keras.initializers import glorot_uniform
-import scipy.misc
-
 import keras.backend as K
 K.set_image_data_format('channels_last')
 K.set_learning_phase(1)
+
+from resnet_utils import *
 
 class ResNet50(object):
     """
@@ -224,24 +226,25 @@ class ResNet50(object):
     def save_model(self, model = 'best_model'):
         # Save the model to JSON
         json_model = self.model.to_json()
-        with open("../../models/" + model + ".json", "w") as json_file:
+        with open(".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + model + ".json", "w") as json_file:
             json_file.write(json_model)
 
         # Save weights
-        self.model.save_weights("../../models/" + model + ".h5")
+        self.model.save_weights(".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + model + ".h5")
         print("Saved model " + model + " to disk")
 
 
     def load_model(self, model = "best_model"):
         print("Attemping to load the model: " + model + " from disk.")
 
-        json_file = open("../../models/" + model + ".json", 'r')
+        # read in the model from json
+        json_file = open(".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + model + ".json", 'r')
         loaded_json_model = json_file.read()
         json_file.close()
         self.model = model_from_json(loaded_json_model)
 
         #load weights into new model
-        self.model.load_weights("../../models/" + model + ".h5")
+        self.model.load_weights(".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + model + ".h5")
         self.model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
         print("Successfully loaded model " + model + " from disk.")
 

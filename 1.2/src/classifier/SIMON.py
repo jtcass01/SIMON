@@ -10,7 +10,7 @@ class SIMON(object):
     def update_model(self, source_model_name, destination_model_name):
         self.dnn_model = ResNet50(input_shape = (64, 64, 3), classes = 6)
         self.dnn_model.load_model(source_model_name)
-        self.dnn_model.load_data_h5("../../../Practice_Data/")
+        self.dnn_model.load_data_h5(".." + os.path.sep + ".." + os.path.sep + ".." + os.path.sep + "Practice_Data" + os.path.sep)
         new_loss, new_accuracy = self.dnn_model.evaluate_model()
 
         if new_loss < self.test_loss and new_accuracy > self.test_accuracy:
@@ -76,11 +76,11 @@ class SIMON(object):
         batch_size = int(input("How large should each training batch be : "))
 
         for attempt in range(attempts):
-            self.train_new_model(epochs, batch_size)
+            self.train_new_model(model_name, epochs, batch_size)
 
         print("Done with all training attempts.  You will need to reload this model using the alias {} before performing predictions.".format(model_name))
 
-    def train_new_model(self, epochs, batch_size):
+    def train_new_model(self, model_name, epochs, batch_size):
         # Create a new process to train a model.  I'm doing this because I've been having trouble with pythons garbage collection
         os.system("sudo python3 train_model.py " + str(epochs) + " " + str(batch_size))
 
