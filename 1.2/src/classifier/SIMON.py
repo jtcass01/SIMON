@@ -11,7 +11,7 @@ class SIMON(object):
 
     def update_model(self, source_model_name, destination_model_name):
         # Create a new process to update the model.  I'm doing this because I've been having trouble with pythons garbage collection
-        os_call = "sudo python3 model_processes.py 2 {} {} {0:.3%f} {0:.3%f}".format(source_model_name, destination_model_name, self.test_loss, self.test_accuracy)
+        os_call = "sudo python3 model_processes.py 2 {0} {1} {2:.3%f} {3:.3%f}".format(source_model_name, destination_model_name, self.test_loss, self.test_accuracy)
         print("Making command line call: ", os_call)
         os.system(os_call)
 
