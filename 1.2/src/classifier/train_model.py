@@ -1,5 +1,5 @@
 from ResNet50 import ResNet50
-import os
+import os, sys
 
 if __name__ == "__main__":
     print("Training new model under alias recent_model")
