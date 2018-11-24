@@ -37,7 +37,7 @@ def update_model():
 
     if new_loss < previous_loss and new_accuracy > previous_accuracy:
         print("New model is better than previous best for given alias.  Saving model under alias.", destination_model_name)
-        model.save_model(destination_model_name)
+        model.save_model(destination_model_alias)
     else:
         print("Previous model is superior.  Can't say we didn't try : )")
 
