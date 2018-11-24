@@ -56,33 +56,33 @@ class ResNet50(object):
     def identity_block(self, X, f, filters, stage, block):
         """
         Implementation of the identity block as defined in 1.2/reference_images/identity_block.png
-    
+
         Arguments:
         X -- input tensor of shape (m, n_H_prev, n_W_prev, n_C_prev)
         f -- integer, specifying the shape of the middle CONV's window for the main path
         filters -- python list of integers, defining the number of filters in the CONV layers of the main path
         stage -- integer, used to name the layers, depending on their position in the network
         block -- string/character, used to name the layers, depending on their position in the network
-    
+
         Returns:
         X -- output of the identity block, tensor of shape (n_H, n_W, n_C)
         """
-    
+
         # defining name basis
         conv_name_base = 'res' + str(stage) + block + '_branch'
         bn_name_base = 'bn' + str(stage) + block + '_branch'
-    
+
         # Retrieve Filters
         F1, F2, F3 = filters
-    
-        # Save the input value. You'll need this later to add back to the main path. 
+
+        # Save the input value. You'll need this later to add back to the main path.
         X_shortcut = X
-    
+
         # First component of main path
         X = Conv2D(filters = F1, kernel_size = (1, 1), strides = (1,1), padding = 'valid', name = conv_name_base + '2a', kernel_initializer = glorot_uniform(seed=0))(X)
         X = BatchNormalization(axis = 3, name = bn_name_base + '2a')(X)
         X = Activation('relu')(X)
-    
+
         # Second component of main path (≈3 lines)
         X = Conv2D(filters = F2, kernel_size = (f, f), strides = (1,1), padding = 'same', name = conv_name_base + '2b', kernel_initializer = glorot_uniform(seed=0))(X)
         X = BatchNormalization(axis = 3, name = bn_name_base + '2b')(X)
@@ -95,13 +95,13 @@ class ResNet50(object):
         # Final step: Add shortcut value to main path, and pass it through a RELU activation (≈2 lines)
         X = Add()([X_shortcut, X])
         X = Activation('relu')(X)
-    
+
         return X
 
     def convolutional_block(self, X, f, filters, stage, block, s = 2):
         """
         Implementation of the convolutional block as defined in 1.2/reference_images/convolutional_block.png
-    
+
         Arguments:
         X -- input tensor of shape (m, n_H_prev, n_W_prev, n_C_prev)
         f -- integer, specifying the shape of the middle CONV's window for the main path
@@ -109,24 +109,24 @@ class ResNet50(object):
         stage -- integer, used to name the layers, depending on their position in the network
         block -- string/character, used to name the layers, depending on their position in the network
         s -- Integer, specifying the stride to be used
-    
+
         Returns:
         X -- output of the convolutional block, tensor of shape (n_H, n_W, n_C)
         """
-    
+
         # defining name basis
         conv_name_base = 'res' + str(stage) + block + '_branch'
         bn_name_base = 'bn' + str(stage) + block + '_branch'
-    
+
         # Retrieve Filters
         F1, F2, F3 = filters
-    
+
         # Save the input value
         X_shortcut = X
 
 
         ##### MAIN PATH #####
-        # First component of main path 
+        # First component of main path
         X = Conv2D(F1, (1, 1), strides = (s,s), padding = 'valid', name = conv_name_base + '2a', kernel_initializer = glorot_uniform(seed=0))(X)
         X = BatchNormalization(axis = 3, name = bn_name_base + '2a')(X)
         X = Activation('relu')(X)
@@ -147,7 +147,7 @@ class ResNet50(object):
         # Final step: Add shortcut value to main path, and pass it through a RELU activation (≈2 lines)
         X = Add()([X, X_shortcut])
         X = Activation('relu')(X)
-    
+
         return X
 
 
@@ -167,10 +167,10 @@ class ResNet50(object):
         # Define the input as a tensor with shape input_shape
         X_input = Input(input_shape)
 
-    
+
         # Zero-Padding
         X = ZeroPadding2D((3, 3))(X_input)
-    
+
         # Stage 1
         X = Conv2D(64, (7, 7), strides = (2, 2), name = 'conv1', kernel_initializer = glorot_uniform(seed=0))(X)
         X = BatchNormalization(axis = 3, name = 'bn_conv1')(X)
@@ -207,7 +207,7 @@ class ResNet50(object):
         # output layer
         X = Flatten()(X)
         X = Dense(classes, activation='softmax', name='fc' + str(classes), kernel_initializer = glorot_uniform(seed=0))(X)
-    
+
         # Create model
         model = Model(inputs = X_input, outputs = X, name='ResNet50')
 
@@ -269,19 +269,26 @@ class ResNet50(object):
         print ("\tLoss = " + str(preds[0]))
         print ("\tTest Accuracy = " + str(preds[1]))
 
+    def predict_image(self, image_path):
+        print("prepareing to predict image:", image_path)
+        img = image.load_img(image_path, target_size(64, 64))
+
+        if img is None:
+            print("Unable to open image")
+            return None
+
+        pixels = image.img_to_array(img)
+        pixels = np.expand_dims(pixels, axis=0)
+        pixels = preprocess_input(pixels)
+
+        return self.model.predict(pixels)
+
 def test_ResNet50(epochs = 2, batch_size = 32):
     test_model = ResNet50(input_shape = (64, 64, 3), classes = 6)
     test_model.load_data_h5("../../../Practice_Data/")
     test_model.train_model(epochs, batch_size)
-    
-    print("Evaluating model before saving")
     test_model.evaluate_model()
 
-    test_model.save_model()
-    test_model.load_model()
-
-    print("Evaluating model after retrieving")
-    test_model.evaluate_model()
 
 if __name__ == "__main__":
-    test_ResNet50(20, 32)
+    test_ResNet50(2, 32)
