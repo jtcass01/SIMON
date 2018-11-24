@@ -55,12 +55,42 @@ class SIMON(object):
             self.load_model(model_name)
             self.dnn_model.load_data_h5("../../../Practice_Data/")
             self.test_loss, self.test_accuracy = self.dnn_model.evaluate_model()
+            del self.dnn_model
             print("Previous model has a loss of {} and an accuracy of {}".format(self.test_loss, self.test_accuracy))
+            print("Maybe we can do better.")
         else:
             print("Unable to find a previous model matching the given alias.")
 
-    def train_new_model(self, model_name):
-        pass
+        attempts = input("Let's start training new models.  How many training attempts would you like to perform : ")
+        epochs = input("How many epochs should each training attempt complete : ")
+        batch_size = input("How large should each training batch be : ")
+
+        for attempt in range(attempts):
+            self.train_new_model(epochs, batch_size)
+
+            new_loss, new_accuracy = self.dnn_model.evaluate_model()
+
+            print("Previous loss: ", self.test_loss)
+            print("Previous accuracy: ", self.test_accuracy)
+            print("New loss:", new_loss)
+            print("New accuarcy:", new_accuracy)
+
+            if new_loss < self.test_loss and new_accuracy > self.test_accuracy:
+                print("New model is better than previous best for given alias.  Saving model under alias.", model_name)
+                self.dnn_model.save_model(model=model_name)
+                self.test_loss = new_loss
+                self.test_accuracy = new_accuracy
+            else:
+                print("Previous model is superior.  Can't say we didn't try : )")
+            del self.dnn_model
+
+        print("Done with all training attempts.  You will need to reload this model using the alias {} before performing predictions.".format(model_name))
+
+    def train_new_model(self, epochs, batch_size):
+        self.dnn_model = ResNet50(input_shape = (64, 64, 3), classes = 6)
+        self.dnn_model.load_data_h5("../../../Practice_Data/")
+        self.dnn_model.train_model(epochs, batch_size)
+
 
     def prompt_predict_image(self):
         if self.dnn_model is None:
