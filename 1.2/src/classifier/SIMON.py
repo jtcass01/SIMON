@@ -1,5 +1,5 @@
 from ResNet50 import ResNet50
-import os, time
+import os
 
 class SIMON(object):
     def __init__(self):
@@ -8,26 +8,8 @@ class SIMON(object):
         self.dnn_model = None
 
     def update_model(self, source_model_name, destination_model_name):
-        self.load_model(source_model_name)
-
-        # Evaluate the model against it's test data
-        new_loss, new_accuracy = self.dnn_model.evaluate_model()
-
-        print("Comparing source model: " + source_model_name + " with stored model: " + destination_model_name)
-        print("\tSource loss: " + str(new_loss))
-        print("\tSource accuracy: " + str(new_accuracy))
-        print("\tPrevious loss: " + str(self.test_loss))
-        print("\tPrevious accuracy: " + str(self.test_accuracy))
-
-        if new_loss < self.test_loss and new_accuracy > self.test_accuracy:
-            print("New model is better than previous best for given alias.  Saving model under alias.", destination_model_name)
-            self.test_loss = new_loss
-            self.test_accuracy = new_accuracy
-            self.dnn_model.save_model(destination_model_name)
-        else:
-            print("Previous model is superior.  Can't say we didn't try : )")
-
-        del self.dnn_model
+        # Create a new process to update the model.  I'm doing this because I've been having trouble with pythons garbage collection
+        os.system("sudo python3 model_processes.py 2 " + str(source_model_name) + " " + str(destination_model_name) + " " + str(self.test_loss) + " " + str(self.test_accuracy))
 
     def load_model(self, model_name):
         # Initialize a ResNet50 model to use in evaluation
@@ -70,7 +52,7 @@ class SIMON(object):
     def prompt_load_previous_model(self):
         model_name = input("What is the alias of the model you would like to load : ")
 
-        if os.path.isfile("../../models/" + model_name + ".h5"): # previous model exists
+        if os.path.isfile(".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + model_name + ".h5"): # previous model exists
             self.load_model(model_name)
         else:
             print("Unable to find a previous model matching the given alias.")
@@ -91,7 +73,11 @@ class SIMON(object):
         batch_size = int(input("How large should each training batch be : "))
 
         for attempt in range(attempts):
+            # Train a new model and log it under the alias "recent_model"
             self.train_new_model(model_name, epochs, batch_size)
+
+            # Update the evaluation of the model and overwrite the previous save if the recent model is better.
+            self.update_model(source_model_name="recent_model", destination_model_name=model_name)
 
         print("Done with all training attempts.  You will need to reload this model using the alias {} before performing predictions.".format(model_name))
 
@@ -99,13 +85,9 @@ class SIMON(object):
         print("Creating a new process to train " + str(model_name))
 
         # Create a new process to train a model.  I'm doing this because I've been having trouble with pythons garbage collection
-        os.system("sudo python3 train_model.py " + str(epochs) + " " + str(batch_size))
+        os.system("sudo python3 model_processes.py 1 " + str(epochs) + " " + str(batch_size))
 
         print("Training done.  Taking a 3 second power nap...")
-        time.sleep(3)
-
-        # Update the evaluation of the model and overwrite the previous save if the recent model is better.
-        self.update_model(source_model_name="recent_model", destination_model_name=model_name)
 
     def prompt_predict_image(self):
         if self.dnn_model is None:
