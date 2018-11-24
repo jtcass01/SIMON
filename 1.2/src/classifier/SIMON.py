@@ -14,7 +14,7 @@ class SIMON(object):
         new_loss, new_accuracy = self.dnn_model.evaluate_model()
 
         if new_loss < self.test_loss and new_accuracy > self.test_accuracy:
-            print("New model is better than previous best for given alias.  Saving model under alias.", model_name)
+            print("New model is better than previous best for given alias.  Saving model under alias.", destination_model_name)
             self.test_loss = new_loss
             self.test_accuracy = new_accuracy
             self.dnn_model.save_model(destination_model_name)
