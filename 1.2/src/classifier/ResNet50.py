@@ -19,7 +19,9 @@ import keras.backend as K
 K.set_image_data_format('channels_last')
 K.set_learning_phase(1)
 
+# User create modules
 from resnet_utils import *
+from FileSystem import FileSystem
 
 class ResNet50(object):
     """
@@ -233,6 +235,12 @@ class ResNet50(object):
         # Save weights
         self.model.save_weights(".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + model + ".h5")
         print("Saved model " + model + " to disk")
+
+        # Save loss and accuracy
+        loss, accuracy = self.evaluate()
+        FileSystem.start_log(str(loss), os.getcwd + os.path.sep ".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + model + "_evaluation.txt")
+        FileSystem.log(str(accuracy), os.getcwd + os.path.sep ".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + model + "_evaluation.txt")
+
 
     def load_model(self, model = "best_model"):
         print("Attemping to load the model: " + model + " from disk.")
