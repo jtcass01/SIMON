@@ -46,6 +46,8 @@ class SIMON(object):
 
         model_path = os.path.dirname(os.path.realpath(__file__)) + model_name + ".h5"
 
+        print("model_path", model_path)
+
         if os.path.isfile(model_path): # previous model exists
             print("Previous model found.")
         else:
