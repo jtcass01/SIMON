@@ -12,4 +12,4 @@ def menu():
 if __name__ == "__main__":
     response = 1
     while(response != 0):
-        response = menu()
+        response = int(menu())
