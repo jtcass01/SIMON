@@ -237,7 +237,7 @@ class ResNet50(object):
         print("Saved model " + model + " to disk")
 
         # Save loss and accuracy
-        loss, accuracy = self.evaluate()
+        loss, accuracy = self.evaluate_model()
         FileSystem.start_log(str(loss), os.getcwd + os.path.sep + ".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + model + "_evaluation.txt")
         FileSystem.log(str(accuracy), os.getcwd + os.path.sep + ".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + model + "_evaluation.txt")
 
