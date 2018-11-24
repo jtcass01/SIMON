@@ -48,7 +48,7 @@ class SIMON(object):
 
         print("model_path", model_path)
 
-        if os.path.isfile(model_path): # previous model exists
+        if os.path.isfile("../../models/best_model.h5"): # previous model exists
             print("Previous model found.")
         else:
             print("Unable to find a previous model matching the given alias.")
