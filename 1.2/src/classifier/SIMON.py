@@ -61,9 +61,9 @@ class SIMON(object):
         else:
             print("Unable to find a previous model matching the given alias.")
 
-        attempts = input("Let's start training new models.  How many training attempts would you like to perform : ")
-        epochs = input("How many epochs should each training attempt complete : ")
-        batch_size = input("How large should each training batch be : ")
+        attempts = int(input("Let's start training new models.  How many training attempts would you like to perform : "))
+        epochs = int(input("How many epochs should each training attempt complete : "))
+        batch_size = int(input("How large should each training batch be : "))
 
         for attempt in range(attempts):
             self.train_new_model(epochs, batch_size)
