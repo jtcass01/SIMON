@@ -34,7 +34,7 @@ class FileSystem():
             file.write(data + "\n")
 
     @staticmethod
-    def load_evaluation(file_name)
+    def load_evaluation(file_name):
         print("Loading evaluation for file:", file_name)
 
         with open(file_name) as evaluation_file:
