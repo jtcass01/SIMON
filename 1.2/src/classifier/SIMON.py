@@ -1,5 +1,5 @@
 from ResNet50 import ResNet50
-import os
+import os, time
 
 class SIMON(object):
     def __init__(self):
@@ -94,8 +94,13 @@ class SIMON(object):
         print("Done with all training attempts.  You will need to reload this model using the alias {} before performing predictions.".format(model_name))
 
     def train_new_model(self, model_name, epochs, batch_size):
+        print("Creating a new process to train " + str(model_name))
+
         # Create a new process to train a model.  I'm doing this because I've been having trouble with pythons garbage collection
         os.system("sudo python3 train_model.py " + str(epochs) + " " + str(batch_size))
+
+        print("Training done.  Taking a 3 second power nap...")
+        time.sleep(3)
 
         # Update the evaluation of the model and overwrite the previous save if the recent model is better.
         self.update_model(source_model_name="recent_model", destination_model_name=model_name)
