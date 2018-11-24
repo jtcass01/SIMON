@@ -1,5 +1,5 @@
 from ResNet50 import ResNet50
-import sys
+import sys, os
 
 def train_new_model():
     print("Training new model under alias recent_model")
@@ -8,7 +8,7 @@ def train_new_model():
 
     model = ResNet50(input_shape = (64, 64, 3), classes = 6)
 
-    model.load_data_h5("../../../Practice_Data/")
+    model.load_data_h5(".." + os.path.sep + ".." + os.path.sep + ".." + os.path.sep + "Practice_Data" + os.path.sep)
 
     model.train_model(epochs, batch_size)
 
