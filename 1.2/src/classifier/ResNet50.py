@@ -50,8 +50,15 @@ class ResNet50(object):
         self.X_test_orig = None
         self.Y_test_orig = None
         self.classes = None
-        self.loss = 1.0
-        self.accuracy = 0.0
+
+    def __del__(self):
+        del self.model
+        del self.X_train_orig
+        del self.Y_train_orig
+        del self.X_test_orig
+        del self.Y_test_orig
+        del self.classes
+        del self
 
     def identity_block(self, X, f, filters, stage, block):
         """
@@ -226,6 +233,8 @@ class ResNet50(object):
 
 
     def load_model(self, model = "best_model"):
+        print("Attemping to load the model: " + model + " from disk.")
+
         json_file = open("../../models/" + model + ".json", 'r')
         loaded_json_model = json_file.read()
         json_file.close()
@@ -234,7 +243,7 @@ class ResNet50(object):
         #load weights into new model
         self.model.load_weights("../../models/" + model + ".h5")
         self.model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
-        print("Loaded model " + model + " from disk")
+        print("Successfully loaded model " + model + " from disk.")
 
 
 
@@ -264,8 +273,6 @@ class ResNet50(object):
     def evaluate_model(self):
         print("\nEvaluating Model...")
         preds = self.model.evaluate(self.X_test, self.Y_test, verbose=1)
-        self.loss = preds[0]
-        self.accuracy = preds[1]
         print ("\tLoss = " + str(preds[0]))
         print ("\tTest Accuracy = " + str(preds[1]))
         return preds[0], preds[1]
