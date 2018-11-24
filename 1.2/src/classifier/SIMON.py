@@ -11,6 +11,7 @@ class SIMON(object):
 
     def update_model(self, source_model_name, destination_model_name):
         # Create a new process to update the model.  I'm doing this because I've been having trouble with pythons garbage collection
+        print("Making command line call: ", "sudo python3 model_processes.py 2 " + str(source_model_name) + " " + str(destination_model_name) + " " + str(self.test_loss) + " " + str(self.test_accuracy))
         os.system("sudo python3 model_processes.py 2 " + str(source_model_name) + " " + str(destination_model_name) + " " + str(self.test_loss) + " " + str(self.test_accuracy))
 
         self.test_loss, self.test_accuracy = FileSystem.load_evaluation(os.getcwd() + os.path.sep + ".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + destination_model_name + "_evaluation.txt")
@@ -89,6 +90,7 @@ class SIMON(object):
         print("Creating a new process to train " + str(model_name))
 
         # Create a new process to train a model.  I'm doing this because I've been having trouble with pythons garbage collection
+        print("Making command line call: ", "sudo python3 model_processes.py 1 " + str(epochs) + " " + str(batch_size))
         os.system("sudo python3 model_processes.py 1 " + str(epochs) + " " + str(batch_size))
 
     def prompt_predict_image(self):
