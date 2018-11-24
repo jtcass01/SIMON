@@ -18,6 +18,8 @@ class SIMON(object):
         response = 1
         while(response != 0):
             response = int(self.display_menu())
+            self.preform_action(menu_response = response)
+            print("Action Complete.\n")
 
     def perform_action(self, menu_response):
         if menu_response == 0:
