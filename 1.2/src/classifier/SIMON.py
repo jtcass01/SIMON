@@ -44,7 +44,7 @@ class SIMON(object):
     def prompt_train_model(self):
         model_name = input("What is the alias of the model you would like to train : ")
 
-        model_path = os.path.dirname(os.path.realpath(__file__)) + model_name + ".h5"
+        model_path = os.path.dirname(os.path.realpath(__file__)) + os.path.sep + model_name + ".h5"
 
         print("model_path", model_path)
 
