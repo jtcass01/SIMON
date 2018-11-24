@@ -29,7 +29,7 @@ class SIMON(object):
         elif menu_response == 1:
             self.prompt_load_previous_model()
         elif menu_response == 2:
-            self.prompt_train_new_model()
+            self.prompt_train_model()
         elif menu_response == 3:
             self.prompt_predict_image()
         else:
