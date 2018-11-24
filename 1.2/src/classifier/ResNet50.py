@@ -38,6 +38,7 @@ class ResNet50(object):
         tf.reset_default_graph()
 
         print("\nBuilding ResNet50 model with input_shape:", str(input_shape), "and classes", str(classes))
+        self.input_shape = input_shape
         self.model = self.build_model(input_shape, classes)
 
         print("\tCompiling model with the following parameters:")
@@ -51,9 +52,10 @@ class ResNet50(object):
         self.Y_train_orig = None
         self.X_test_orig = None
         self.Y_test_orig = None
-        self.classes = None
+        self.classes = classes
 
     def __del__(self):
+        del self.input_shape
         del self.model
         del self.X_train_orig
         del self.Y_train_orig
@@ -238,15 +240,15 @@ class ResNet50(object):
         print("Attemping to load the model: " + model + " from disk.")
 
         # read in the model from json
-        json_file = open(".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + model + ".json", 'r')
-        loaded_json_model = json_file.read()
-        json_file.close()
-        self.model = model_from_json(loaded_json_model)
+        print("Building model graph using initial specifications")
+        self.model = self.build_model(self.input_shape, self.classes)
+        print("Successfully built model.")
 
         #load weights into new model
+        print("Attempting to load model from disk")
         self.model.load_weights(".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + model + ".h5")
         self.model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
-        print("Successfully loaded model " + model + " from disk.")
+        print("Successfully loaded model weights for: " + model + " from disk.")
 
 
 
