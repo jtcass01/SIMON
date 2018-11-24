@@ -7,7 +7,13 @@ if __name__ == "__main__":
     batch_size = int(sys.argv[2])
 
     model = ResNet50(input_shape = (64, 64, 3), classes = 6)
+
     model.load_data_h5("../../../Practice_Data/")
+
     model.train_model(epochs, batch_size)
+
     model.evaluate_model()
+
     model.save_model(model = "recent_model")
+
+    del model

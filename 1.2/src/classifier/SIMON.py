@@ -8,10 +8,23 @@ class SIMON(object):
         self.dnn_model = None
 
     def update_model(self, source_model_name, destination_model_name):
+        # Initialize a ResNet50 model to use in evaluation
         self.dnn_model = ResNet50(input_shape = (64, 64, 3), classes = 6)
+
+        # Load a model given a source model alias
         self.dnn_model.load_model(source_model_name)
+
+        # Load the test and train data into the model
         self.dnn_model.load_data_h5(".." + os.path.sep + ".." + os.path.sep + ".." + os.path.sep + "Practice_Data" + os.path.sep)
+
+        # Evaluate the model against it's test data
         new_loss, new_accuracy = self.dnn_model.evaluate_model()
+
+        print("Comparing source model: " + source_model_name + " with stored model: " + destination_model_name)
+        print("\tSource loss: " + new_loss)
+        print("\tSource accuracy: " + new_accuracy)
+        print("\tPrevious loss: " + self.test_loss)
+        print("\tPrevious accuracy: " + self.test_accuracy)
 
         if new_loss < self.test_loss and new_accuracy > self.test_accuracy:
             print("New model is better than previous best for given alias.  Saving model under alias.", destination_model_name)
