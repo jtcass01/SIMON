@@ -21,10 +21,10 @@ class SIMON(object):
         new_loss, new_accuracy = self.dnn_model.evaluate_model()
 
         print("Comparing source model: " + source_model_name + " with stored model: " + destination_model_name)
-        print("\tSource loss: " + new_loss)
-        print("\tSource accuracy: " + new_accuracy)
-        print("\tPrevious loss: " + self.test_loss)
-        print("\tPrevious accuracy: " + self.test_accuracy)
+        print("\tSource loss: " + str(new_loss))
+        print("\tSource accuracy: " + str(new_accuracy))
+        print("\tPrevious loss: " + str(self.test_loss))
+        print("\tPrevious accuracy: " + str(self.test_accuracy))
 
         if new_loss < self.test_loss and new_accuracy > self.test_accuracy:
             print("New model is better than previous best for given alias.  Saving model under alias.", destination_model_name)
