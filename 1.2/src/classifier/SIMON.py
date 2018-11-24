@@ -8,14 +8,7 @@ class SIMON(object):
         self.dnn_model = None
 
     def update_model(self, source_model_name, destination_model_name):
-        # Initialize a ResNet50 model to use in evaluation
-        self.dnn_model = ResNet50(input_shape = (64, 64, 3), classes = 6)
-
-        # Load a model given a source model alias
-        self.dnn_model.load_model(source_model_name)
-
-        # Load the test and train data into the model
-        self.dnn_model.load_data_h5(".." + os.path.sep + ".." + os.path.sep + ".." + os.path.sep + "Practice_Data" + os.path.sep)
+        self.load_model(source_model_name)
 
         # Evaluate the model against it's test data
         new_loss, new_accuracy = self.dnn_model.evaluate_model()
@@ -36,6 +29,15 @@ class SIMON(object):
 
         del self.dnn_model
 
+    def load_model(self, model_name):
+        # Initialize a ResNet50 model to use in evaluation
+        self.dnn_model = ResNet50(input_shape = (64, 64, 3), classes = 6)
+
+        # Load a model given a source model alias
+        self.dnn_model.load_model(model_name)
+
+        # Load the test and train data into the model
+        self.dnn_model.load_data_h5(".." + os.path.sep + ".." + os.path.sep + ".." + os.path.sep + "Practice_Data" + os.path.sep)
 
     def display_menu(self):
         print("Hello.  My name is SIMON.  I am a neural network designed to classify representations of american sign language.")
