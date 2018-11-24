@@ -11,7 +11,7 @@ class SIMON(object):
         # Create a new process to update the model.  I'm doing this because I've been having trouble with pythons garbage collection
         os.system("sudo python3 model_processes.py 2 " + str(source_model_name) + " " + str(destination_model_name) + " " + str(self.test_loss) + " " + str(self.test_accuracy))
 
-        self.test_loss, self.test_accuracy = FileSystem.load_evaluation(os.getcwd + os.path.sep ".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + destination_model_name + "_evaluation.txt")
+        self.test_loss, self.test_accuracy = FileSystem.load_evaluation(os.getcwd + os.path.sep + ".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + destination_model_name + "_evaluation.txt")
 
     def load_model(self, model_name):
         # Initialize a ResNet50 model to use in evaluation
