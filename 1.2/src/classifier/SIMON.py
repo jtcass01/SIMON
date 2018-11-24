@@ -11,8 +11,9 @@ class SIMON(object):
 
     def update_model(self, source_model_name, destination_model_name):
         # Create a new process to update the model.  I'm doing this because I've been having trouble with pythons garbage collection
-        print("Making command line call: ", "sudo python3 model_processes.py 2 " + str(source_model_name) + " " + str(destination_model_name) + " " + str(self.test_loss) + " " + str(self.test_accuracy))
-        os.system("sudo python3 model_processes.py 2 " + str(source_model_name) + " " + str(destination_model_name) + " " + str(self.test_loss) + " " + str(self.test_accuracy))
+        os_call = "sudo python3 model_processes.py 2 {} {} {0:.3%f} {0:.3%f}".format(source_model_name, destination_model_name, self.test_loss, self.test_accuracy)
+        print("Making command line call: ", os_call)
+        os.system(os_call)
 
         self.test_loss, self.test_accuracy = FileSystem.load_evaluation(os.getcwd() + os.path.sep + ".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + destination_model_name + "_evaluation.txt")
 
@@ -55,7 +56,7 @@ class SIMON(object):
             print("Invalid menu response.  Please try again.")
 
     def prompt_load_previous_model(self):
-        model_name = input("What is the alias of the model you would like to load : ")
+        model_name = input("\nWhat is the alias of the model you would like to load : ")
 
         if os.path.isfile(".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + model_name + ".h5"): # previous model exists
             self.load_model(model_name)
@@ -87,7 +88,7 @@ class SIMON(object):
         print("Done with all training attempts.  You will need to reload this model using the alias {} before performing predictions.".format(model_name))
 
     def train_new_model(self, model_name, epochs, batch_size):
-        print("Creating a new process to train " + str(model_name))
+        print("\nCreating a new process to train " + str(model_name))
 
         # Create a new process to train a model.  I'm doing this because I've been having trouble with pythons garbage collection
         print("Making command line call: ", "sudo python3 model_processes.py 1 " + str(epochs) + " " + str(batch_size))
