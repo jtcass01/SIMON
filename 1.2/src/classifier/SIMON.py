@@ -3,9 +3,26 @@ import os
 
 class SIMON(object):
     def __init__(self):
-        self.test_loss = 1.0
+        self.test_loss = 6.0
         self.test_accuracy = 0.0
         self.dnn_model = None
+
+    def update_model(self, source_model_name, destination_model_name):
+        self.dnn_model = ResNet50(input_shape = (64, 64, 3), classes = 6)
+        self.dnn_model.load_model(source_model_name)
+        self.dnn_model.load_data_h5("../../../Practice_Data/")
+        new_loss, new_accuracy = self.dnn_model.evaluate_model()
+
+        if new_loss < self.test_loss and new_accuracy > self.test_accuracy:
+            print("New model is better than previous best for given alias.  Saving model under alias.", model_name)
+            self.test_loss = new_loss
+            self.test_accuracy = new_accuracy
+            self.dnn_model.save_model(destination_model_name)
+        else:
+            print("Previous model is superior.  Can't say we didn't try : )")
+
+        del self.dnn_model
+
 
     def display_menu(self):
         print("Hello.  My name is SIMON.  I am a neural network designed to classify representations of american sign language.")
@@ -43,19 +60,12 @@ class SIMON(object):
         else:
             print("Unable to find a previous model matching the given alias.")
 
-    def load_model(self, model_name):
-            self.dnn_model = ResNet50(input_shape = (64, 64, 3), classes = 6)
-            self.dnn_model.load_model(model_name)
-
     def prompt_train_model(self):
         model_name = input("What is the alias of the model you would like to train : ")
 
         if os.path.isfile("../../models/" + model_name + ".h5"): # previous model exists
             print("Previous model found matching given.  Evaluating previous model...")
-            self.load_model(model_name)
-            self.dnn_model.load_data_h5("../../../Practice_Data/")
-            self.test_loss, self.test_accuracy = self.dnn_model.evaluate_model()
-            del self.dnn_model
+            self.update_model(source_model_name=model_name, destination_model_name=model_name)
             print("Previous model has a loss of {} and an accuracy of {}".format(self.test_loss, self.test_accuracy))
             print("Maybe we can do better.")
         else:
@@ -66,23 +76,9 @@ class SIMON(object):
         batch_size = int(input("How large should each training batch be : "))
 
         for attempt in range(attempts):
-            self.train_new_model(epochs, batch_size)
+            os.system("sudo python3 train_model.py " + str(epochs) + " " + str(batch_size))
 
-            new_loss, new_accuracy = self.dnn_model.evaluate_model()
-
-            print("Previous loss: ", self.test_loss)
-            print("Previous accuracy: ", self.test_accuracy)
-            print("New loss:", new_loss)
-            print("New accuarcy:", new_accuracy)
-
-            if new_loss < self.test_loss and new_accuracy > self.test_accuracy:
-                print("New model is better than previous best for given alias.  Saving model under alias.", model_name)
-                self.dnn_model.save_model(model=model_name)
-                self.test_loss = new_loss
-                self.test_accuracy = new_accuracy
-            else:
-                print("Previous model is superior.  Can't say we didn't try : )")
-            del self.dnn_model
+            self.update_model(source_model_name="recent_model", destination_model_name=model_name)
 
         print("Done with all training attempts.  You will need to reload this model using the alias {} before performing predictions.".format(model_name))
 

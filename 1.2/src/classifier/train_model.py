@@ -1,5 +1,5 @@
 from ResNet50 import ResNet50
-import os, sys
+import sys
 
 if __name__ == "__main__":
     print("Training new model under alias recent_model")
@@ -10,4 +10,4 @@ if __name__ == "__main__":
     model.load_data_h5("../../../Practice_Data/")
     model.train_model(epochs, batch_size)
     model.evaluate_model()
-    model.save_model("recent_model")
+    model.save_model(model = "recent_model")
