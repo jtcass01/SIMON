@@ -62,7 +62,6 @@ class ResNet50(object):
         del self.X_test_orig
         del self.Y_test_orig
         del self.classes
-        del self
 
     def identity_block(self, X, f, filters, stage, block):
         """
@@ -235,6 +234,8 @@ class ResNet50(object):
         self.model.save_weights(".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + model + ".h5")
         print("Saved model " + model + " to disk")
 
+        del self.model
+
 
     def load_model(self, model = "best_model"):
         print("Attemping to load the model: " + model + " from disk.")
@@ -245,7 +246,7 @@ class ResNet50(object):
         print("Successfully built model.")
 
         #load weights into new model
-        print("Attempting to load model from disk")
+        print("Attempting to load model from disk..")
         self.model.load_weights(".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + model + ".h5")
         self.model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
         print("Successfully loaded model weights for: " + model + " from disk.")
