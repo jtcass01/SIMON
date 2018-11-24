@@ -234,9 +234,6 @@ class ResNet50(object):
         self.model.save_weights(".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + model + ".h5")
         print("Saved model " + model + " to disk")
 
-        del self.model
-
-
     def load_model(self, model = "best_model"):
         print("Attemping to load the model: " + model + " from disk.")
 
