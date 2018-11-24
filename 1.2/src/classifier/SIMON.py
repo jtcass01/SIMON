@@ -15,7 +15,7 @@ class SIMON(object):
     def loop_menu(self):
         response = 1
         while(response != 0):
-            response = int(self.menu())
+            response = int(self.display_menu())
 
 if __name__ == "__main__":
     simon = SIMON()
