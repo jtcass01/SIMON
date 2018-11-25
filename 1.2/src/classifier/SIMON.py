@@ -15,7 +15,7 @@ class SIMON(object):
         print("Making command line call: ", os_call)
         os.system(os_call)
 
-        self.test_loss, self.test_accuracy = FileSystem.load_evaluation(os.getcwd() + os.path.sep + ".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + destination_model_name + "_evaluation.txt")
+        (self.test_loss, self.test_accuracy) = FileSystem.load_evaluation(os.getcwd() + os.path.sep + ".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + destination_model_name + "_evaluation.txt")
 
     def load_model(self, model_name):
         # Initialize a ResNet50 model to use in evaluation
