@@ -40,8 +40,8 @@ class FileSystem():
         with open(file_name) as evaluation_file:
             data = evaluation_file.readlines()
 
-        loss = data[0]
-        accuracy = data[1]
+        loss = float(data[0])
+        accuracy = float(data[1])
 
         print("Evaluation loaded: Loss = {} | Accuracy = {}".format(loss, accuracy))
 
