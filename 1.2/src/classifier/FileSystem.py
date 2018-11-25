@@ -45,4 +45,4 @@ class FileSystem():
 
         print("Evaluation loaded: Loss = {} | Accuracy = {}".format(loss, accuracy))
 
-        return (loss, accuracy)
+        return loss, accuracy

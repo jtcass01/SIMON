@@ -11,11 +11,15 @@ class SIMON(object):
 
     def update_model(self, source_model_name, destination_model_name):
         # Create a new process to update the model.  I'm doing this because I've been having trouble with pythons garbage collection
+        print("source_model_name:", source_model_name)
+        print("destination_model_name:", destination_model_name)
+        print("self.test_loss:", self.test_loss)
+        print("self.test_accuracy:", self.test_accuracy)
         os_call = "sudo python3 model_processes.py 2 {0} {1} {2:.3f} {3:.3f}".format(source_model_name, destination_model_name, self.test_loss, self.test_accuracy)
         print("Making command line call: ", os_call)
         os.system(os_call)
 
-        (self.test_loss, self.test_accuracy) = FileSystem.load_evaluation(os.getcwd() + os.path.sep + ".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + destination_model_name + "_evaluation.txt")
+        self.test_loss, self.test_accuracy = FileSystem.load_evaluation(os.getcwd() + os.path.sep + ".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + destination_model_name + "_evaluation.txt")
 
     def load_model(self, model_name):
         # Initialize a ResNet50 model to use in evaluation
