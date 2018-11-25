@@ -15,7 +15,7 @@ class SIMON(object):
         print("destination_model_name:", destination_model_name)
         print("self.test_loss:", self.test_loss)
         print("self.test_accuracy:", self.test_accuracy)
-        os_call = "python3 model_processes.py 2 {0} {1} {2:.3f} {3:.3f}".format(source_model_name, destination_model_name, self.test_loss, self.test_accuracy)
+        os_call = "sudo python3 model_processes.py 2 {0} {1} {2:.3f} {3:.3f}".format(source_model_name, destination_model_name, self.test_loss, self.test_accuracy)
         print("Making command line call: ", os_call)
         os.system(os_call)
 
@@ -68,10 +68,10 @@ class SIMON(object):
             print("Unable to find a previous model matching the given alias.")
 
     def prompt_train_model(self):
-        model_name = input("What is the alias of the model you would like to train : ")
+        model_name = input("\nWhat is the alias of the model you would like to train : ")
 
         if os.path.isfile("../../models/" + model_name + ".h5"): # previous model exists
-            print("Previous model found matching given.  Evaluating previous model...")
+            print("Previous model found matching given alias.  Evaluating previous model...")
             self.update_model(source_model_name=model_name, destination_model_name=model_name)
             print("Previous model has a loss of {} and an accuracy of {}".format(self.test_loss, self.test_accuracy))
             print("Maybe we can do better.")
@@ -83,7 +83,7 @@ class SIMON(object):
         batch_size = int(input("How large should each training batch be : "))
 
         for attempt in range(attempts):
-            print("Beginning training attempt: ", attempt)
+            print("\nBeginning training attempt: ", attempt)
             # Train a new model and log it under the alias "recent_model"
             self.train_new_model(model_name, epochs, batch_size)
 
@@ -97,7 +97,7 @@ class SIMON(object):
 
         # Create a new process to train a model.  I'm doing this because I've been having trouble with pythons garbage collection
         print("Making command line call: ", "python3 model_processes.py 1 " + str(epochs) + " " + str(batch_size))
-        os.system("python3 model_processes.py 1 " + str(epochs) + " " + str(batch_size))
+        os.system("sudo python3 model_processes.py 1 " + str(epochs) + " " + str(batch_size))
 
     def prompt_predict_image(self):
         if self.dnn_model is None:
