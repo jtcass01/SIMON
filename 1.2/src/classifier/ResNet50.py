@@ -243,7 +243,7 @@ class ResNet50(object):
 
         # Save graphical model summary and print summary to console.
         print(self.model.summary())
-        plot_model(self.model, to_file=".." + os.path.sep + ".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + model + ".png", show_shapes=True, show_layer_names=True)
+        plot_model(self.model, to_file= os.getcwd() + os.path.sep + ".." + os.path.sep + ".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + model + ".png", show_shapes=True, show_layer_names=True)
 
 
 

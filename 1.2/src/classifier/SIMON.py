@@ -16,7 +16,7 @@ class SIMON(object):
         print("self.test_loss:", self.test_loss)
         print("self.test_accuracy:", self.test_accuracy)
         os_call = "sudo python3 model_processes.py 2 {0} {1} {2:.3f} {3:.3f}".format(source_model_name, destination_model_name, self.test_loss, self.test_accuracy)
-        print("Making command line call: ", os_call)
+        print("\nMaking command line call: ", os_call)
         os.system(os_call)
 
         self.test_loss, self.test_accuracy = FileSystem.load_evaluation(os.getcwd() + os.path.sep + ".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + destination_model_name + "_evaluation.txt")
@@ -96,7 +96,7 @@ class SIMON(object):
         print("\nCreating a new process to train " + str(model_name))
 
         # Create a new process to train a model.  I'm doing this because I've been having trouble with pythons garbage collection
-        print("Making command line call: ", "python3 model_processes.py 1 " + str(epochs) + " " + str(batch_size))
+        print("\nMaking command line call: ", "python3 model_processes.py 1 " + str(epochs) + " " + str(batch_size))
         os.system("sudo python3 model_processes.py 1 " + str(epochs) + " " + str(batch_size))
 
     def prompt_predict_image(self):
