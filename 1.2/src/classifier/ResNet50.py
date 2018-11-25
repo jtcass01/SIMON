@@ -12,7 +12,7 @@ from keras.preprocessing import image
 from keras.utils import layer_utils
 from keras.utils.data_utils import get_file
 from keras.applications.imagenet_utils import preprocess_input
-from keras.utils.vis_utils import model_to_dot
+from keras.utils.vis_utils import model_to_dot, plot_model
 from keras.utils import plot_model
 from keras.initializers import glorot_uniform
 import keras.backend as K
@@ -240,6 +240,11 @@ class ResNet50(object):
         loss, accuracy = self.evaluate_model()
         FileSystem.start_log(str(loss), os.getcwd() + os.path.sep + ".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + model + "_evaluation.txt")
         FileSystem.log(str(accuracy), os.getcwd() + os.path.sep + ".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + model + "_evaluation.txt")
+
+        # Save graphical model summary and print summary to console.
+        print(self.model.summary())
+        plot_model(self.model, to_file=".." + os.path.sep + ".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + model + ".png", show_shapes=True, show_layer_names=True)
+
 
 
     def load_model(self, model = "best_model"):

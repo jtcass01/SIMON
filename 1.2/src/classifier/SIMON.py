@@ -15,7 +15,7 @@ class SIMON(object):
         print("destination_model_name:", destination_model_name)
         print("self.test_loss:", self.test_loss)
         print("self.test_accuracy:", self.test_accuracy)
-        os_call = "sudo python3 model_processes.py 2 {0} {1} {2:.3f} {3:.3f}".format(source_model_name, destination_model_name, self.test_loss, self.test_accuracy)
+        os_call = "python3 model_processes.py 2 {0} {1} {2:.3f} {3:.3f}".format(source_model_name, destination_model_name, self.test_loss, self.test_accuracy)
         print("Making command line call: ", os_call)
         os.system(os_call)
 
@@ -32,7 +32,7 @@ class SIMON(object):
         self.dnn_model.load_data_h5(".." + os.path.sep + ".." + os.path.sep + ".." + os.path.sep + "Practice_Data" + os.path.sep)
 
     def display_menu(self):
-        print("Hello.  My name is SIMON.  I am a neural network designed to classify representations of american sign language.")
+        print("\nHello.  My name is SIMON.  I am a neural network designed to classify representations of american sign language.")
         print("1 ) Load a previously trained model.")
         print("2 ) Train a new model or attempt to improve a previous one.")
         print("3 ) predict an image.")
@@ -83,6 +83,7 @@ class SIMON(object):
         batch_size = int(input("How large should each training batch be : "))
 
         for attempt in range(attempts):
+            print("Beginning training attempt: ", attempt)
             # Train a new model and log it under the alias "recent_model"
             self.train_new_model(model_name, epochs, batch_size)
 
@@ -95,8 +96,8 @@ class SIMON(object):
         print("\nCreating a new process to train " + str(model_name))
 
         # Create a new process to train a model.  I'm doing this because I've been having trouble with pythons garbage collection
-        print("Making command line call: ", "sudo python3 model_processes.py 1 " + str(epochs) + " " + str(batch_size))
-        os.system("sudo python3 model_processes.py 1 " + str(epochs) + " " + str(batch_size))
+        print("Making command line call: ", "python3 model_processes.py 1 " + str(epochs) + " " + str(batch_size))
+        os.system("python3 model_processes.py 1 " + str(epochs) + " " + str(batch_size))
 
     def prompt_predict_image(self):
         if self.dnn_model is None:
