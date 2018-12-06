@@ -294,8 +294,8 @@ class ResNet50(object):
         return preds[0], preds[1]
 
     def predict_image(self, image_path):
-        print("prepareing to predict image:", image_path)
-        img = image.load_img(image_path, target_size(64, 64))
+        print("preparing to predict image:", image_path)
+        img = image.load_img(image_path, target_size=(64, 64))
 
         if img is None:
             print("Unable to open image")
@@ -305,7 +305,11 @@ class ResNet50(object):
         pixels = np.expand_dims(pixels, axis=0)
         pixels = preprocess_input(pixels)
 
-        return self.model.predict(pixels)
+        print('Input image shape:', pixels.shape)
+
+        for index, response in enumerate(self.model.predict(pixels)[0]):
+            if response == 1:
+                return index
 
 def test_ResNet50(epochs = 2, batch_size = 32):
     test_model = ResNet50(input_shape = (64, 64, 3), classes = 6)
