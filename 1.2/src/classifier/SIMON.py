@@ -1,4 +1,5 @@
 import os
+from tkinter.filedialog import askopenfilename
 
 from ResNet50 import ResNet50
 from FileSystem import FileSystem
@@ -125,8 +126,7 @@ class SIMON(object):
         if self.dnn_model is None:
             print("You need to load or train a model for me to perform predictions with.")
         else:
-            image_path = input("Where is your image located : ")
-            prediction = self.dnn_model.predict_image(image_path = image_path)
+            prediction = self.dnn_model.predict_image(image_path = askopenfilename())
             print("The model predicted:", prediction)
 
 

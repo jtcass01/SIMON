@@ -4,8 +4,8 @@ import serial
 
 """ Initialize objects. """
 simon = SIMON()
-com_port = input('Where is the machine I am controlling?\n')
-ser = serial.Serial(com_port, 9600)
+#com_port = input('Where is the machine I am controlling?\n')
+#ser = serial.Serial(com_port, 9600)
 
 
 def menu_prompt():
@@ -18,9 +18,10 @@ def menu(user_response):
         simon.improve_prediction_model(epochs = epochs)
     elif user_response == '2':
         prediction = simon.predict_image(image_location = askopenfilename())
-        write_response(prediction)
+        print("SIMON guessed ", prediction)
+#        write_response(prediction)
     elif user_response == '0':
-        ser.close()
+#        ser.close()
         exit()
     else:
         print('Invalid response please try again.')
@@ -38,7 +39,7 @@ def write_response(integer_value):
         ser.write(b'4')
     if integer_value == 5:
         ser.write(b'5')
-            
+
 
 if __name__ == '__main__':
     while(1):
