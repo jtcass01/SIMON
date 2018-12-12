@@ -1,7 +1,9 @@
+import serial
 import os
 from tkinter.filedialog import askopenfilename
 
 from ResNet50 import ResNet50
+from deep_neural_network import DNNPredictionModel
 from FileSystem import FileSystem
 
 class SIMON(object):
@@ -22,16 +24,6 @@ class SIMON(object):
 
         self.test_loss, self.test_accuracy = FileSystem.load_evaluation(os.getcwd() + os.path.sep + ".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + destination_model_name + "_evaluation.txt")
 
-    def load_model(self, model_name):
-        # Initialize a ResNet50 model to use in evaluation
-        self.dnn_model = ResNet50(input_shape = (64, 64, 3), classes = 6)
-
-        # Load a model given a source model alias
-        self.dnn_model.load_model(model_name)
-
-        # Load the test and train data into the model
-        self.dnn_model.load_data_h5(".." + os.path.sep + ".." + os.path.sep + ".." + os.path.sep + "Practice_Data" + os.path.sep)
-
     def display_menu(self):
         print("\nHello.  My name is SIMON.  I am a neural network designed to classify representations of american sign language.")
         print("1 ) Load a previously trained model.")
@@ -51,8 +43,9 @@ class SIMON(object):
 
     def loop_model_menu(self):
         response = 1
+        print("\nA model has been loaded.")
         while(response != 0):
-            print("\nA model has been loaded.")
+            print(" ==== MODEL MENU ====")
             print("1 ) Predict an image.")
             print("2 ) Evaluate the model.")
             print("3 ) Control a device.")
@@ -66,7 +59,34 @@ class SIMON(object):
             elif response == 2:
                 self.dnn_model.evaluate_model()
             elif response == 3:
-                pass
+                serial_port = input("What serial port is your device connected to? ")
+
+                serial_connection = serial.Serial(
+                    port = serial_port,
+                    baudrate = 115200,
+                    parity = serial.PARITY_NONE,
+                    stopbits = serial.STOPBITS_ONE,
+                    bytesize = serial.EIGHTBITS,
+                    timeout = 1
+                )
+
+                device_control_response = 1
+                while device_control_response != 0:
+                    print("\nDevice control menu:")
+                    print("1 ) Predict an image.")
+                    print("2 ) Evaluate the model.")
+                    print("0 ) Exit.")
+                    device_control_response = int(input('What would you like to do : '))
+
+                    if device_control_response == 0:
+                        print("Exiting...")
+                    elif device_control_response == 1:
+                        prediction = str(self.dnn_model.predict_image(image_path = askopenfilename()))
+                        serial_connection.write(prediction.encode())
+                        print("The model predicted:", prediction)
+                    elif device_control_response == 2:
+                        self.dnn_model.evaluate_model()
+
             else:
                 print("Invalid menu response.  Please try again.")
 
@@ -82,13 +102,40 @@ class SIMON(object):
         else:
             print("Invalid menu response.  Please try again.")
 
+
     def prompt_load_previous_model(self):
+        model_type = 0
+
+        while model_type != 1 and model_type != 2:
+            print("== DNN model types ==")
+            print("1 ) Classic DNN")
+            print("2 ) ResNet50")
+            model_type = int(input("What type of model would you like to load :"))
+
         model_name = input("\nWhat is the alias of the model you would like to load : ")
 
-        if os.path.isfile(".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + model_name + ".h5"): # previous model exists
-            self.load_model(model_name)
-        else:
-            print("Unable to find a previous model matching the given alias.")
+        if model_type == 1:
+            # Classic DNN
+            if os.path.isfile(".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + model_name + os.path.sep + "paramb1.npy"): # previous model exists
+                self.dnn_model = DNNPredictionModel(parameters=None, accuracies = None)
+                self.dnn_model.load_model(model = "dnn_best")
+            else:
+                print("Unable to find a previous model matching the given alias.")
+
+        else: #ResNet50
+            if os.path.isfile(".." + os.path.sep + ".." + os.path.sep + "models" + os.path.sep + model_name + ".h5"): # previous model exists
+                # Initialize a ResNet50 model to use in evaluation
+                self.dnn_model = ResNet50(input_shape = (64, 64, 3), classes = 6)
+
+                # Load a model given a source model alias
+                self.dnn_model.load_model(model_name)
+
+                # Load the test and train data into the model
+                self.dnn_model.load_data_h5(".." + os.path.sep + ".." + os.path.sep + ".." + os.path.sep + "Practice_Data" + os.path.sep)
+            else:
+                print("Unable to find a previous model matching the given alias.")
+
+
 
     def prompt_train_model(self):
         model_name = input("\nWhat is the alias of the model you would like to train : ")

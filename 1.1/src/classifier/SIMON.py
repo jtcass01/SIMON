@@ -14,23 +14,23 @@ class SIMON(object):
     def predict_image(self, image_location):
         image = np.array(ndimage.imread(image_location, flatten = False))
         X = scipy.misc.imresize(image, size=(64,64)).reshape((1, 64*64*3)).T
-        
+
         return self.prediction_model.predict(X)
 
 
-    def load_model(self):
+    def load_model(self, model="dnn_best"):
         parameters = {
-            'W1' : np.load('../../prior_best/paramW1.npy'),
-            'b1' : np.load('../../prior_best/paramb1.npy'),
-            'W2' : np.load('../../prior_best/paramW2.npy'),
-            'b2' : np.load('../../prior_best/paramb2.npy'),
-            'W3' : np.load('../../prior_best/paramW3.npy'),
-            'b3' : np.load('../../prior_best/paramb3.npy')
+            'W1' : np.load('../../models/' + model + '/paramW1.npy'),
+            'b1' : np.load('../../models/' + model + '/paramb1.npy'),
+            'W2' : np.load('../../models/' + model + '/paramW2.npy'),
+            'b2' : np.load('../../models/' + model + '/paramb2.npy'),
+            'W3' : np.load('../../models/' + model + '/paramW3.npy'),
+            'b3' : np.load('../../models/' + model + '/paramb3.npy')
         }
 
         accuracies = {
-            'train_accuracy' : np.load('../../prior_best/trainaccuracy.npy'),
-            'test_accuracy' : np.load('../../prior_best/testaccuracy.npy')
+            'train_accuracy' : np.load('../../models/' + model + '/trainaccuracy.npy'),
+            'test_accuracy' : np.load('../../models/' + model + '/testaccuracy.npy')
         }
 
         return PredictionModel(parameters, accuracies)
@@ -48,23 +48,23 @@ class SIMON(object):
         test_model = DeepNeuralNetwork(X_train_orig, Y_train_orig, X_test_orig, Y_test_orig, classes)
 
         for i in range(epochs):
-            parameters, accuracies = test_model.train(num_epochs = 1500, print_cost = True)
+            parameters, accuracies = test_model.train(num_epochs = epochs, print_cost = True)
             new_model = PredictionModel(parameters, accuracies)
 
-            if  new_model > self.prediction_model :
+            if  new_model > self:
                 print("\n\tNew model is better... Displaying accuracies and updating files.. ")
-                self.prediction_model = new_model
-                print(self.prediction_model)
+                self = new_model
+                print(self)
                 self.save_model()
             else:
                 print("Previous model is superior or equivalent.")
 
-        print(self.prediction_model)
+        print(self)
 
 
     def save_model(self):
-        parameters = self.prediction_model.parameters
-        accuracies = self.prediction_model.accuracies
+        parameters = self.parameters
+        accuracies = self.accuracies
 
         W1 = parameters['W1']
         np.save('../../prior_best/paramW1.npy',W1)
