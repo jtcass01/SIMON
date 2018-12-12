@@ -95,16 +95,16 @@ class ResNet50(object):
         X = BatchNormalization(axis = 3, name = bn_name_base + '2a')(X)
         X = Activation('relu')(X)
 
-        # Second component of main path (≈3 lines)
+        # Second component of main path
         X = Conv2D(filters = F2, kernel_size = (f, f), strides = (1,1), padding = 'same', name = conv_name_base + '2b', kernel_initializer = glorot_uniform(seed=0))(X)
         X = BatchNormalization(axis = 3, name = bn_name_base + '2b')(X)
         X = Activation('relu')(X)
 
-        # Third component of main path (≈2 lines)
+        # Third component of main path
         X = Conv2D(filters = F3, kernel_size = (1, 1), strides = (1,1), padding = 'valid', name = conv_name_base + '2c', kernel_initializer = glorot_uniform(seed=0))(X)
         X = BatchNormalization(axis = 3, name = bn_name_base + '2c')(X)
 
-        # Final step: Add shortcut value to main path, and pass it through a RELU activation (≈2 lines)
+        # Final step: Add shortcut value to main path, and pass it through a RELU activation
         X = Add()([X_shortcut, X])
         X = Activation('relu')(X)
 
@@ -143,20 +143,20 @@ class ResNet50(object):
         X = BatchNormalization(axis = 3, name = bn_name_base + '2a')(X)
         X = Activation('relu')(X)
 
-        # Second component of main path (≈3 lines)
+        # Second component of main path
         X = Conv2D(F2, (f, f), strides = (1,1), padding = 'same', name = conv_name_base + '2b', kernel_initializer = glorot_uniform(seed=0))(X)
         X = BatchNormalization(axis = 3, name = bn_name_base + '2b')(X)
         X = Activation('relu')(X)
 
-        # Third component of main path (≈2 lines)
+        # Third component of main path
         X = Conv2D(F3, (1, 1), strides = (1,1), padding = 'valid', name = conv_name_base + '2c', kernel_initializer = glorot_uniform(seed=0))(X)
         X = BatchNormalization(axis = 3, name = bn_name_base + '2c')(X)
 
-        ##### SHORTCUT PATH #### (≈2 lines)
+        ##### SHORTCUT PATH ####
         X_shortcut = Conv2D(F3, (1, 1), strides = (s,s), padding = 'valid', name = conv_name_base + '1', kernel_initializer = glorot_uniform(seed=0))(X_shortcut)
         X_shortcut = BatchNormalization(axis = 3, name = bn_name_base + '1')(X_shortcut)
 
-        # Final step: Add shortcut value to main path, and pass it through a RELU activation (≈2 lines)
+        # Final step: Add shortcut value to main path, and pass it through a RELU activation
         X = Add()([X, X_shortcut])
         X = Activation('relu')(X)
 
@@ -194,13 +194,13 @@ class ResNet50(object):
         X = self.identity_block(X, 3, [64, 64, 256], stage=2, block='b')
         X = self.identity_block(X, 3, [64, 64, 256], stage=2, block='c')
 
-        # Stage 3 (≈4 lines)
+        # Stage 3
         X = self.convolutional_block(X, f = 3, filters = [128, 128, 512], stage = 3, block='a', s = 2)
         X = self.identity_block(X, 3, [128, 128, 512], stage=3, block='b')
         X = self.identity_block(X, 3, [128, 128, 512], stage=3, block='c')
         X = self.identity_block(X, 3, [128, 128, 512], stage=3, block='d')
 
-        # Stage 4 (≈6 lines)
+        # Stage 4
         X = self.convolutional_block(X, f = 3, filters = [256, 256, 1024], stage = 4, block='a', s = 2)
         X = self.identity_block(X, 3, [256, 256, 1024], stage=4, block='b')
         X = self.identity_block(X, 3, [256, 256, 1024], stage=4, block='c')
@@ -208,12 +208,12 @@ class ResNet50(object):
         X = self.identity_block(X, 3, [256, 256, 1024], stage=4, block='e')
         X = self.identity_block(X, 3, [256, 256, 1024], stage=4, block='f')
 
-        # Stage 5 (≈3 lines)
+        # Stage 5
         X = self.convolutional_block(X, f = 3, filters = [512, 512, 2048], stage = 5, block='a', s = 2)
         X = self.identity_block(X, 3, [512, 512, 2048], stage=5, block='b')
         X = self.identity_block(X, 3, [512, 512, 2048], stage=5, block='c')
 
-        # AVGPOOL (≈1 line). Use "X = AveragePooling2D(...)(X)"
+        # AVGPOOL
         X = AveragePooling2D(pool_size=(2, 2), name='avg_pool')(X)
 
         # output layer
