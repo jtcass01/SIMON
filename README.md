@@ -4,6 +4,7 @@
 Neural Network Models Implemented by Jacob Cassady
 
 **1.1 Team Members** - Jacob Cassady, Aaron Fox, Nolan Holdan, Kristi Kidd, Jacob Marcum
+
 C and Assembly code developed by Jacob Marcum.
 
 **1.2 Team Members** - Jacob Cassady, Patrick Chuong, Mitchel Johnson, Oscar Leon, Matthew Long
