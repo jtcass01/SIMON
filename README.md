@@ -28,7 +28,7 @@ Previously it was thought that very deep neural networks were impossible to trai
 ##### 1.1.1 Structure
 The structure of SIMONs ResNet50 model was implemented using notes taken from Professor Andrew Ng’s deeplearning.ai specialization on coursera. The figures displayed in this section were taken from his notes. A generated graph of SIMON’s implemented ResNet50 can be found [here](https://github.com/jtcass01/SIMON/blob/master/1.2/models/best_model.png).
 
-<img src="images/vanishing_grad_kiank.png" style="width:450px;height:220px;">
+<img src="1.2/reference_images/resnet50_model.png" style="width:450px;height:220px;">
 
 **Figure 1**  : **ResNet50 Model** <br> The above figure displays at a high level the structure of the ResNet50 model. It contains a series of convolutional blocks followed by identity blocks with a head and a tail for initial padding and final prediction. Below is a table tracking the image dimensions as it propagates through the network.
 
