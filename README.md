@@ -126,6 +126,7 @@ SIMON requests the user to choose an image from their directory for prediction. 
 The classic deep neural network was implemented in a previous version of SIMON. It is a three layered fully connected network with 25 neurons in the first layer, 12 in the second, and 6 in the final. Each node contains a linear matrix function as well as a rectified linear unit (ReLU) activation function.
 
 <img src="doc/images/DNN.png" style="width:450px;height:220px;">
+
 **Figure 4**  : **Fully Connected Deep Neural Network**
 
 #### 1.2.1 Implementation
@@ -155,19 +156,19 @@ The purpose of the Sign-Interfaced Machine Operating Network (SIMON) was to deve
 
 ## References
 ### SIMON
-[keras](https://keras.io/)
-[TensorFlow](https://www.tensorflow.org/)
-[Numpy](http://www.numpy.org/)
-[H5py](https://www.h5py.org/)
-[TkInter](https://wiki.python.org/moin/TkInter)
-[SciPy](https://www.scipy.org/)
-[MatPlotLib](https://matplotlib.org/)
+- [keras](https://keras.io/)
+- [TensorFlow](https://www.tensorflow.org/)
+- [Numpy](http://www.numpy.org/)
+- [H5py](https://www.h5py.org/)
+- [TkInter](https://wiki.python.org/moin/TkInter)
+- [SciPy](https://www.scipy.org/)
+- [MatPlotLib](https://matplotlib.org/)
 ### Response System
-[pigpio](http://abyz.me.uk/rpi/pigpio/python.html)
+- [pigpio](http://abyz.me.uk/rpi/pigpio/python.html)
 ### Courses
-[deeplearning.ai by Professor Andrew Ng](https://www.coursera.org/specializations/deep-learning)
+- [deeplearning.ai by Professor Andrew Ng](https://www.coursera.org/specializations/deep-learning)
 ### Academic Publications
-He, K., Xiangyu, Z., Shaoqing, R., & Jian, S. (2015, December 10). Deep Residual Learning for Image Recognition. Cornell University Library. From Cornell University Library: https://arxiv.org/abs/1512.03385
+- He, K., Xiangyu, Z., Shaoqing, R., & Jian, S. (2015, December 10). Deep Residual Learning for Image Recognition. Cornell University Library. From Cornell University Library: https://arxiv.org/abs/1512.03385
 
-Pascanu, R., Mikolov, T., & Bengio, Y. (2012, November 21). Understanding the exploding gradient problem. From https://pdfs.semanticscholar.org/728d/814b92a9d2c6118159bb7d9a4b3dc5eeaaeb.pdf
+- Pascanu, R., Mikolov, T., & Bengio, Y. (2012, November 21). Understanding the exploding gradient problem. From https://pdfs.semanticscholar.org/728d/814b92a9d2c6118159bb7d9a4b3dc5eeaaeb.pdf
 
