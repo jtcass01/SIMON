@@ -123,20 +123,51 @@ After a few days of training, the best ResNet50 model correctly categorized all 
 SIMON requests the user to choose an image from their directory for prediction. Images during deployment of SIMON were taken using a laptop’s built-in 1080-720p camera. These images were then scaled using the scipy module to 64-64p images. When attempting to use these images from a different and distorted distribution, the ResNet50 model always produced a prediction of 0 but would correctly predict all individually tested images from the same data distribution. Consequently, the ResNet50 model is not a good candidate for controlling a device until the train and test set include a more representative distribution to that used in deployment.
 
 ### 1.2 Classic Deep Neural Network Model
+The classic deep neural network was implemented in a previous version of SIMON. It is a three layered fully connected network with 25 neurons in the first layer, 12 in the second, and 6 in the final. Each node contains a linear matrix function as well as a rectified linear unit (ReLU) activation function.
+
+<img src="doc/images/DNN.png" style="width:450px;height:220px;">
+**Figure 4**  : **Fully Connected Deep Neural Network**
+
+#### 1.2.1 Implementation
+Please see deep_neural_network.py in the Neural Network section of Source Code within this document.
+
+The deep neural network was implemented using tensorflow which has underpinnings in NumPy. The cost was computed using a categorical cross entropy function and the model was trained using the Adam optimizer with a learning rate of 0.0001. Logging and loading of neural networks was done using NumPy.save() and load functions for interfacing with .npy compression files.
+
+#### 1.2.1 Results
+The fully connected DNN was trained for a few days in series using 20 epochs and a batch size of 32. The best model correctly categorized all of the training set and 105 of the 120 (87.5%) images in the test set. This shows a higher variance than the ResNet50 model when comparing the training and the test set.
+
+On the other hand, in deployment the DNN performed much better. When providing images from the laptop’s web cam the DNN correctly categorized all tested 0, 1, and 2 representations provided but categorized all tested 3, 4, and 5 representations as a 2. This is a large improvement over the ResNet50 in deployment and speaks on the generality of more shallow networks when it comes to different data distributions.
+
+### 2. LED Strip (Section authored by Matthew Long)
+The RGB Led light strip used 5050 LED chips. Each chip contains red, green, and blue LEDs. These can be set to display any RGB value using light intensity and therefore RGB values resulting in similar way to set color of an element of a website such as rgb(50,50,180), which is a shade of dark blue. The first value is the red intensity, the second the green intensity, and lastly the blue intensity. These values must fall within the range of 0 to 255.
+
+Three MOSFETs are used to control the LED strip. They behave like a switch but are controlled by the voltage at the gate input. If there is no voltage the MOSFET behaves like an extremely large resistor, and if there is 3.3V it behaves like a very small resistor. Each of the three MOSFETs control one of the three RGB colors. The circuit diagram can be found in the schematics section of this report.
+
+The LED strip is controlled using python and the pigpio module. This module talks to the daemon to allow the control of the general-purpose input outputs. The red color is controlled using GPIO27, the green using GPIO17, and the blue using GPIO22. The source code for each color used in coordination with the neural network can be found in the source code section of this report.
+
+## Analysis
+The major takeaway from this project was the requirement for similar data distributions for both the train/test set data and the deployment data. Using a more powerful neural network architecture will not necessarily improve performance if there is a large difference in the two data distributions. An example of this can be seen in the differences of performance during deployment of the two neural net models. This knowledge is useful when choosing the correct neural network architecture for a project. If the data distribution is said to have high variability and there is not a sufficiently large source of data, then it might benefit to choose a shallower architecture.
+
+Upon completion of the project, knowledge was gained on main subjects including the Raspberry Pi, general purpose input output (gpio) pin utilization, convolutional/deep neural networks, LED strips, serial communication, python, and asynchronous processing. In order to gain this information, documentation sheets for various third-party libraries and schematics were referenced, scholarly articles were read, and notes were taken from Professor Andrew Ng’s Deep Learning Specialization on Coursera.
+
+## Conclusion
+The purpose of the Sign-Interfaced Machine Operating Network (SIMON) was to develop a neural network capable of categorizing a discrete set of American Sign Language (ASL) representations from an image input and producing a desired response in a peripheral machine. The goal was to make the response machine interrupt driven and upgrade the neural network to a ResNet50 model. The button satisfied an interrupt driven communication between SIMON and the peripheral Raspberry Pi 3 but the ResNet50 model failed to generalize to the images taken from a laptop webcam. This highlights the important requirement for congruency among data distributions at all levels: training, testing, and deployment. Sign-interfaced control of the LED response machine was still reached using the classic DNN which better generalized to the deployment data.
 
 ## References
- Microchip Technology Inc. (2018, January 3). AVR Assembler Instructions. Retrieved January
-         30, 2018, from http://www.microchip.com/webdoc/avrassembler/avrassembler.wb_instru 
-         ction_list.html ATmega328P Xplained Mini[PDF]. (2017). Chandler, AZ: Microchip 
-         Technology, Inc
+### SIMON
+[keras](https://keras.io/)
+[TensorFlow](https://www.tensorflow.org/)
+[Numpy](http://www.numpy.org/)
+[H5py](https://www.h5py.org/)
+[TkInter](https://wiki.python.org/moin/TkInter)
+[SciPy](https://www.scipy.org/)
+[MatPlotLib](https://matplotlib.org/)
+### Response System
+[pigpio](http://abyz.me.uk/rpi/pigpio/python.html)
+### Courses
+[deeplearning.ai by Professor Andrew Ng](https://www.coursera.org/specializations/deep-learning)
+### Academic Publications
+He, K., Xiangyu, Z., Shaoqing, R., & Jian, S. (2015, December 10). Deep Residual Learning for Image Recognition. Cornell University Library. From Cornell University Library: https://arxiv.org/abs/1512.03385
 
-Atmel Corporation. (2016). ATmega328/P Datasheet Complete [PDF]. Atmel.
-
-Specifications for Liquid Crystal Display[PDF]. (n.d.). AZ Displays, Inc.
-
-ATmega328P Xplained Mini[PDF]. (2017). Chandler, AZ: Microchip Technology, Inc.
-
-Notes for Deep Neural Network were taken from Stanford Professor Andrew Ng’s Deep Learning Specialization on coursera.org. https://www.coursera.org/specializations/deep-learning
-
-
+Pascanu, R., Mikolov, T., & Bengio, Y. (2012, November 21). Understanding the exploding gradient problem. From https://pdfs.semanticscholar.org/728d/814b92a9d2c6118159bb7d9a4b3dc5eeaaeb.pdf
 
