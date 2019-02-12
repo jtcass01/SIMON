@@ -32,6 +32,98 @@ The structure of SIMONs ResNet50 model was implemented using notes taken from Pr
 
 **Figure 1**  : **ResNet50 Model** <br> The above figure displays at a high level the structure of the ResNet50 model. It contains a series of convolutional blocks followed by identity blocks with a head and a tail for initial padding and final prediction. Below is a table tracking the image dimensions as it propagates through the network.
 
+<table> 
+    <tr>
+        <td> 
+          Stage
+        </td>
+        <td> 
+          Image Dimension at Stage Output
+        </td> 
+    </tr>
+    <tr>
+        <td> 
+          Input
+        </td>
+        <td> 
+          (64,64,3)
+        </td> 
+    </tr> 
+    <tr>
+        <td> 
+           Stage 1
+        </td>
+        <td> 
+           (64,64,128)
+        </td> 
+    </tr>
+    <tr>
+        <td> 
+           Stage 2
+        </td>
+        <td> 
+           (64,64,256)
+        </td> 
+    </tr>
+    <tr>
+        <td> 
+           Stage 3
+        </td>
+        <td> 
+           (128,128,256)
+        </td> 
+    </tr>
+    <tr>
+        <td> 
+           Stage 4
+        </td>
+        <td> 
+           (256,256,1024)
+        </td> 
+    </tr>
+    <tr>
+        <td> 
+           Stage 5
+        </td>
+        <td> 
+           (512,512,2048)
+        </td> 
+    </tr>
+    <tr>
+        <td> 
+           Output Layer
+        </td>
+        <td> 
+           (1,6)
+        </td> 
+    </tr>
+</table>
+
+**Table 1**  : **ResNet50 Image Dimensions**
+
+<img src="1.2/reference_images/identity_block.png" style="width:450px;height:220px;">
+
+**Figure 2**  : **Identity Block** <br> As mentioned previously, the identity block is important for allowing the network to learn the identity function. As you can see in the figure, the input from the start of the neural chain is summed with the output of a later block before the block enters its activation function. It is important to note the dimensions of the input and later output must be the same for the addition to work. Therefore, the dimensions of the input and output of each identity block can be assumed to be the same.
+
+<img src="1.2/reference_images/convolutional_block.png" style="width:450px;height:220px;">
+
+**Figure 3**  : **Convolutional Block** <br> The Convolutional block is like the identity block but includes an additional 2D convolutional layer during the skip connection. This allows for the changing of dimension during the convolutional block while still gaining some of the benefits from the increased complexity of the skip connection.
+
+##### 1.1.2 Implementation
+Please see ResNet50.py in the Neural Network section of Source Code within this document.
+
+The ResNet50 model was implemented in keras, a high-level neural network framework with tensorflow underpinnings. Keras was chosen because it greatly reduces the time, thought, and lines of code required to implement complex deep neural networks. This is because you don’t have to implement the backpropagation portions and can utilize predefined loss and optimizer functions. SIMON’s ResNet50 model was compiled with the adam optimizer and categorical cross entropy loss function.
+
+Models were logged and loaded using HDF5 binary compression and the h5py library. JSON and graphical descriptions of the models were also generated when each model was saved and are stored alongside the saved models.
+
+##### 1.1.2 Results
+A training framework was built within SIMON for training a series of models and choosing the best one. 1200 images of 6 different ASL representations (200 images per representation) were used for training and testing the models with 1080 images in the training set and 120 images in the test set. Models were trained for 20 epochs using a minibatch size of 32. The models were then compared using the test set to determine minimal variance.
+
+After a few days of training, the best ResNet50 model correctly categorized all the training set images and 114 of 120 (95%) of the test set images. This shows a working model that has low bias and variance. It is important to note the training and test set images come from the exact same data distribution.
+
+SIMON requests the user to choose an image from their directory for prediction. Images during deployment of SIMON were taken using a laptop’s built-in 1080-720p camera. These images were then scaled using the scipy module to 64-64p images. When attempting to use these images from a different and distorted distribution, the ResNet50 model always produced a prediction of 0 but would correctly predict all individually tested images from the same data distribution. Consequently, the ResNet50 model is not a good candidate for controlling a device until the train and test set include a more representative distribution to that used in deployment.
+
+### 1.2 Classic Deep Neural Network Model
 
 ## References
  Microchip Technology Inc. (2018, January 3). AVR Assembler Instructions. Retrieved January
