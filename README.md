@@ -117,7 +117,7 @@ The ResNet50 model was implemented in keras, a high-level neural network framewo
 
 Models were logged and loaded using HDF5 binary compression and the h5py library. JSON and graphical descriptions of the models were also generated when each model was saved and are stored alongside the saved models.
 
-##### 1.1.2 Results
+##### 1.1.3 Results
 A training framework was built within SIMON for training a series of models and choosing the best one. 1200 images of 6 different ASL representations (200 images per representation) were used for training and testing the models with 1080 images in the training set and 120 images in the test set. Models were trained for 20 epochs using a minibatch size of 32. The models were then compared using the test set to determine minimal variance.
 
 After a few days of training, the best ResNet50 model correctly categorized all the training set images and 114 of 120 (95%) of the test set images. This shows a working model that has low bias and variance. It is important to note the training and test set images come from the exact same data distribution.
@@ -136,7 +136,7 @@ Please see deep_neural_network.py in the Neural Network section of Source Code w
 
 The deep neural network was implemented using tensorflow which has underpinnings in NumPy. The cost was computed using a categorical cross entropy function and the model was trained using the Adam optimizer with a learning rate of 0.0001. Logging and loading of neural networks was done using NumPy.save() and load functions for interfacing with .npy compression files.
 
-#### 1.2.1 Results
+#### 1.2.2 Results
 The fully connected DNN was trained for a few days in series using 20 epochs and a batch size of 32. The best model correctly categorized all of the training set and 105 of the 120 (87.5%) images in the test set. This shows a higher variance than the ResNet50 model when comparing the training and the test set.
 
 On the other hand, in deployment the DNN performed much better. When providing images from the laptop’s web cam the DNN correctly categorized all tested 0, 1, and 2 representations provided but categorized all tested 3, 4, and 5 representations as a 2. This is a large improvement over the ResNet50 in deployment and speaks on the generality of more shallow networks when it comes to different data distributions.
