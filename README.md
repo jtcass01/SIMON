@@ -4,9 +4,13 @@
 Neural Network Models Implemented by Jacob Cassady
 
 **1.1 Team Members** - Jacob Cassady, Aaron Fox, Nolan Holdan, Kristi Kidd, Jacob Marcum
+- Class: Embedded Systems
+- Semester: Spring 2018
 - C and Assembly code developed by Jacob Marcum.
 
 **1.2 Team Members** - Jacob Cassady, Patrick Chuong, Mitchel Johnson, Oscar Leon, Matthew Long
+- Class: Microcomputer Design
+- Semester: Fall 2018
 - Sections of python code controling LED lights developed by Patrick Chuong and Matthew Long.
 
 [YouTube Video Demonstrating SIMON 1.2](https://www.youtube.com/watch?v=DxSEFz9Di6I&t)
