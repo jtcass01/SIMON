@@ -59,7 +59,7 @@ The structure of SIMONs ResNet50 model was implemented using notes taken from Pr
            Stage 1
         </td>
         <td> 
-           (64,64,128)
+           (70,70,3)
         </td> 
     </tr>
     <tr>
@@ -67,7 +67,7 @@ The structure of SIMONs ResNet50 model was implemented using notes taken from Pr
            Stage 2
         </td>
         <td> 
-           (64,64,256)
+           (15,15,64)
         </td> 
     </tr>
     <tr>
@@ -75,7 +75,7 @@ The structure of SIMONs ResNet50 model was implemented using notes taken from Pr
            Stage 3
         </td>
         <td> 
-           (128,128,256)
+           (15,15,256)
         </td> 
     </tr>
     <tr>
@@ -83,7 +83,7 @@ The structure of SIMONs ResNet50 model was implemented using notes taken from Pr
            Stage 4
         </td>
         <td> 
-           (256,256,1024)
+           (8,8,512)
         </td> 
     </tr>
     <tr>
@@ -91,7 +91,7 @@ The structure of SIMONs ResNet50 model was implemented using notes taken from Pr
            Stage 5
         </td>
         <td> 
-           (512,512,2048)
+           (4,4,1064)
         </td> 
     </tr>
     <tr>
